@@ -36,6 +36,68 @@ const emailTemplates = {
     `,
   }),
 
+  adminEmailVerification: (data: EmailOptions['data']) => ({
+    subject: 'Verify Your Admin Account',
+    html: `
+      <h1>Welcome to EyeWear Admin Panel!</h1>
+      <p>Hi ${data.name},</p>
+      <p>Thank you for registering as an admin. Please click the link below to verify your email address:</p>
+      <a href="${data.verificationUrl}" style="
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #2196F3;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        margin: 16px 0;
+      ">Verify Admin Email</a>
+      <p>If you did not request admin access, please contact the system administrator immediately.</p>
+      <p>This link will expire in 24 hours.</p>
+    `,
+  }),
+
+  adminPasswordReset: (data: EmailOptions['data']) => ({
+    subject: 'Admin Password Reset Request',
+    html: `
+      <h1>Admin Password Reset Request</h1>
+      <p>Hi ${data.name},</p>
+      <p>We received a request to reset your admin password. Click the link below to reset it:</p>
+      <a href="${data.resetUrl}" style="
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #2196F3;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        margin: 16px 0;
+      ">Reset Admin Password</a>
+      <p>If you did not request a password reset, please contact the system administrator immediately.</p>
+      <p>This link will expire in 1 hour.</p>
+    `,
+  }),
+
+  adminPasswordChanged: (data: EmailOptions['data']) => ({
+    subject: 'Admin Password Changed',
+    html: `
+      <h1>Admin Password Changed</h1>
+      <p>Hi ${data.name},</p>
+      <p>Your admin password has been successfully changed.</p>
+      <p>If you did not make this change, please contact the system administrator immediately.</p>
+      <p>Best regards,<br>EyeWear Admin Team</p>
+    `,
+  }),
+
+  adminEmailUpdated: (data: EmailOptions['data']) => ({
+    subject: 'Admin Email Updated',
+    html: `
+      <h1>Admin Email Updated</h1>
+      <p>Hi ${data.name},</p>
+      <p>Your admin email address has been successfully updated.</p>
+      <p>If you did not make this change, please contact the system administrator immediately.</p>
+      <p>Best regards,<br>EyeWear Admin Team</p>
+    `,
+  }),
+
   passwordReset: (data: EmailOptions['data']) => ({
     subject: 'Reset Your Password',
     html: `

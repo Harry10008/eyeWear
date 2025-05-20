@@ -9,7 +9,7 @@ import {
   updatePaymentStatus,
 } from '../controllers/order.controller';
 import { validateRequest } from '../middleware/validateRequest';
-import { authenticate, authorize } from '../middleware/auth';
+import { authenticate, authorize, requireAuth } from '../middleware/auth';
 import {
   createOrderSchema,
   updateOrderStatusSchema,
@@ -21,13 +21,13 @@ const router = express.Router();
 // All order routes require authentication
 router.use(authenticate);
 
-// Customer routes
-router.get('/my-orders', getMyOrders);
-router.get('/:id', getOrder);
-router.post('/', validateRequest(createOrderSchema), createOrder);
-router.post('/:id/cancel', cancelOrder);
+// Customer routes - require authentication
+router.get('/my-orders', requireAuth, getMyOrders);
+router.get('/:id', requireAuth, getOrder);
+router.post('/', requireAuth, validateRequest(createOrderSchema), createOrder);
+router.post('/:id/cancel', requireAuth, cancelOrder);
 
-// Admin routes
+// Admin routes - require admin role
 router.use(authorize('admin'));
 router.get('/', getAllOrders);
 router.patch('/:id/status', validateRequest(updateOrderStatusSchema), updateOrderStatus);

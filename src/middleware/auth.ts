@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/user.model';
+import { User, IUser } from '../models/user.model';
+import { Admin, IAdmin } from '../models/admin.model';
 import { AppError } from './errorHandler';
 import { logger } from '../utils/logger';
 
@@ -9,13 +10,21 @@ interface JwtPayload {
   role: string;
 }
 
+// Create a union type for authenticated users
+type AuthenticatedUser = (IUser | IAdmin) & { _id: any };
+
 declare global {
   namespace Express {
     interface Request {
-      user?: any;
+      user?: AuthenticatedUser;
     }
   }
 }
+
+// Type guard to check if request is authenticated
+const isAuthenticatedRequest = (req: Request): req is Request & { user: AuthenticatedUser } => {
+  return req.user !== undefined;
+};
 
 export const authenticate = async (
   req: Request,
@@ -34,19 +43,34 @@ export const authenticate = async (
       process.env.JWT_SECRET || 'your-secret-key'
     ) as JwtPayload;
 
-    const user = await User.findById(decoded.id).select('-password');
+    let authenticatedUser: AuthenticatedUser | null = null;
 
-    if (!user) {
+    // Try to find user first
+    const userDoc = await User.findById(decoded.id).select('-password').lean();
+    if (userDoc) {
+      authenticatedUser = userDoc as IUser & { _id: any };
+    } else {
+      // If not found, try to find admin
+      const adminDoc = await Admin.findById(decoded.id).select('-password').lean();
+      if (adminDoc) {
+        authenticatedUser = adminDoc as IAdmin & { _id: any };
+      }
+    }
+
+    if (!authenticatedUser) {
       throw new AppError('User not found', 404);
     }
 
-    // Check if user is verified
-    if (!user.isEmailVerified) {
+    // Check if user/admin is verified
+    if (!authenticatedUser.isEmailVerified) {
       throw new AppError('Please verify your email first', 401);
     }
 
-    req.user = user;
-    logger.info('User authenticated', { userId: user._id, role: user.role });
+    req.user = authenticatedUser;
+    logger.info('User authenticated', { 
+      userId: authenticatedUser._id, 
+      role: authenticatedUser.role 
+    });
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
@@ -57,12 +81,24 @@ export const authenticate = async (
   }
 };
 
+// Middleware to ensure request is authenticated
+export const requireAuth = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  if (!isAuthenticatedRequest(req)) {
+    throw new AppError('Authentication required', 401);
+  }
+  next();
+};
+
 export const authorize = (...roles: string[]) => (
   req: Request,
   _res: Response,
   next: NextFunction
 ) => {
-  if (!req.user) {
+  if (!isAuthenticatedRequest(req)) {
     throw new AppError('Authentication required', 401);
   }
 

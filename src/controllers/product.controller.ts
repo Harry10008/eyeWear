@@ -72,8 +72,11 @@ export const getProducts = async (
 
     query = query.skip(skip).limit(limit);
 
-    // Execute query
-    const products = await query.populate('category', 'name slug');
+    // Execute query with population
+    const products = await query
+      .populate('category', 'name slug')
+      .populate('subCategory', 'name slug');
+
     const total = await Product.countDocuments(JSON.parse(queryStr));
 
     res.status(200).json({
@@ -175,9 +178,14 @@ export const addReview = async (
       throw new AppError('Product not found', 404);
     }
 
+    // Initialize reviews array if it doesn't exist
+    if (!product.reviews) {
+      product.reviews = [];
+    }
+
     // Check if user has already reviewed
     const existingReview = product.reviews.find(
-      (review) => review.user.toString() === req.user._id.toString()
+      (review) => review.user.toString() === req.user!._id.toString()
     );
 
     if (existingReview) {
@@ -186,7 +194,7 @@ export const addReview = async (
 
     // Add review
     product.reviews.push({
-      user: req.user._id,
+      user: req.user!._id,
       rating,
       comment,
       createdAt: new Date(),

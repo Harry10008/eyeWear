@@ -8,7 +8,7 @@ import {
   addReview,
   getRecommendations,
 } from '../controllers/product.controller';
-import { authenticate, authorize } from '../middleware/auth';
+import { authenticate, authorize, requireAuth } from '../middleware/auth';
 import { validateRequest } from '../middleware/validateRequest';
 import { productSchema } from '../validations/product.schema';
 import { reviewSchema } from '../validations/review.schema';
@@ -23,10 +23,10 @@ router.get('/:id/recommendations', getRecommendations);
 // Protected routes - require authentication
 router.use(authenticate);
 
-// User routes
-router.post('/:id/reviews', validateRequest(reviewSchema), addReview);
+// User routes - require authentication
+router.post('/:id/reviews', requireAuth, validateRequest(reviewSchema), addReview);
 
-// Admin routes
+// Admin routes - require admin role
 router.use(authorize('admin'));
 router.post('/', validateRequest(productSchema), createProduct);
 router.put('/:id', validateRequest(productSchema), updateProduct);

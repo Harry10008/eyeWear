@@ -18,13 +18,13 @@ router.post(
   '/login',
   validateRequest(authSchema.login),
   authController.login
-);
+);//done
 
 router.post(
   '/forgot-password',
   validateRequest(authSchema.forgotPassword),
   authController.forgotPassword
-);
+);//ok
 
 router.post(
   '/reset-password',

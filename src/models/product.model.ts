@@ -1,33 +1,36 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
+// Import Category model to ensure it's registered
+require('./category.model');
+
 export interface IProduct extends Document {
   name: string;
   description: string;
   price: number;
   offerPrice?: number;
   category: mongoose.Types.ObjectId;
-  subCategory?: mongoose.Types.ObjectId;
+  subCategory: mongoose.Types.ObjectId;
   brand: string;
   gender: 'men' | 'women' | 'unisex' | 'kids';
   type: 'sunglasses' | 'screenGlasses' | 'powerGlasses';
-  frameMaterial: string;
-  frameColor: string;
-  lensType: string;
+  frameMaterial?: string;
+  frameColor?: string;
+  lensType?: string;
   lensColor?: string;
-  lensWidth: number;
-  bridgeWidth: number;
-  templeLength: number;
-  frameWidth: number;
-  frameHeight: number;
-  features: string[];
-  images: string[];
-  stock: number;
-  isActive: boolean;
-  ratings: {
+  lensWidth?: number;
+  bridgeWidth?: number;
+  templeLength?: number;
+  frameWidth?: number;
+  frameHeight?: number;
+  features?: string[];
+  images?: string[];
+  stock?: number;
+  isActive?: boolean;
+  ratings?: {
     average: number;
     count: number;
   };
-  reviews: Array<{
+  reviews?: Array<{
     user: mongoose.Types.ObjectId;
     rating: number;
     comment: string;
@@ -71,6 +74,7 @@ const productSchema = new Schema<IProduct>(
     subCategory: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
+      required: [true, 'Product subcategory is required'],
     },
     brand: {
       type: String,
@@ -89,55 +93,44 @@ const productSchema = new Schema<IProduct>(
     },
     frameMaterial: {
       type: String,
-      required: [true, 'Frame material is required'],
     },
     frameColor: {
       type: String,
-      required: [true, 'Frame color is required'],
     },
     lensType: {
       type: String,
-      required: [true, 'Lens type is required'],
     },
     lensColor: {
       type: String,
     },
     lensWidth: {
       type: Number,
-      required: [true, 'Lens width is required'],
       min: [0, 'Lens width cannot be negative'],
     },
     bridgeWidth: {
       type: Number,
-      required: [true, 'Bridge width is required'],
       min: [0, 'Bridge width cannot be negative'],
     },
     templeLength: {
       type: Number,
-      required: [true, 'Temple length is required'],
       min: [0, 'Temple length cannot be negative'],
     },
     frameWidth: {
       type: Number,
-      required: [true, 'Frame width is required'],
       min: [0, 'Frame width cannot be negative'],
     },
     frameHeight: {
       type: Number,
-      required: [true, 'Frame height is required'],
       min: [0, 'Frame height cannot be negative'],
     },
     features: [{
       type: String,
-      required: [true, 'Product features are required'],
     }],
     images: [{
       type: String,
-      required: [true, 'Product images are required'],
     }],
     stock: {
       type: Number,
-      required: [true, 'Product stock is required'],
       min: [0, 'Stock cannot be negative'],
       default: 0,
     },
@@ -195,9 +188,20 @@ productSchema.index({ 'ratings.average': -1 });
 // Update average rating when a review is added or modified
 productSchema.pre('save', function (next) {
   if (this.isModified('reviews')) {
-    const totalRatings = this.reviews.reduce((sum, review) => sum + review.rating, 0);
-    this.ratings.average = this.reviews.length > 0 ? totalRatings / this.reviews.length : 0;
-    this.ratings.count = this.reviews.length;
+    // Initialize reviews and ratings if they don't exist
+    if (!this.reviews) {
+      this.reviews = [];
+    }
+    if (!this.ratings) {
+      this.ratings = {
+        average: 0,
+        count: 0
+      };
+    }
+
+    const totalRatings = this.reviews!.reduce((sum, review) => sum + review.rating, 0);
+    this.ratings!.average = this.reviews!.length > 0 ? totalRatings / this.reviews!.length : 0;
+    this.ratings!.count = this.reviews!.length;
   }
   next();
 });

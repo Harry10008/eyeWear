@@ -18,7 +18,7 @@ router.use(authenticate);
 
 // Cart routes
 router.get('/', getCart);
-router.post('/', validateRequest(cartItemSchema), addToCart);
+router.post('/add', validateRequest(cartItemSchema), addToCart);
 router.put('/:itemId', validateRequest(updateCartItemSchema), updateCartItem);
 router.delete('/:itemId', removeFromCart);
 router.delete('/', clearCart);

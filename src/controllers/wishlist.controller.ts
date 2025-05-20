@@ -1,226 +1,176 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { Wishlist } from '../models/wishlist.model';
-import { Product } from '../models/product.model';
 import { AppError } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
-import mongoose from 'mongoose';
+import { catchAsync } from '../utils/catchAsync';
 
 // Get user's wishlist
-export const getWishlist = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const wishlist = await Wishlist.findOne({ user: req.user._id })
-      .populate({
-        path: 'products',
-        select: 'name description price offerPrice images brand category',
-      });
-
-    if (!wishlist) {
-      logger.info('Wishlist not found for user', { userId: req.user._id });
-      res.status(200).json({
-        status: 'success',
-        data: {
-          wishlist: {
-            products: [],
-            productCount: 0,
-          },
-        },
-      });
-      return;
-    }
-
-    logger.info('Wishlist retrieved', { 
-      userId: req.user._id,
-      productCount: wishlist.products.length
-    });
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        wishlist,
-      },
-    });
-  } catch (error) {
-    next(error);
+export const getWishlist = catchAsync(async (req: Request, res: Response) => {
+  const userId = (req as any).user?._id;
+  if (!userId) {
+    throw new AppError('User not authenticated', 401);
   }
-};
 
-// Add product to wishlist
-export const addToWishlist = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const { productId } = req.body;
+  const wishlist = await Wishlist.findOne({ user: userId })
+    .populate('products', 'name price offerPrice images');
 
-    // Check if product exists
-    const product = await Product.findById(productId);
-    if (!product) {
-      throw new AppError('Product not found', 404);
-    }
-
-    // Find or create wishlist
-    let wishlist = await Wishlist.findOne({ user: req.user._id });
-    if (!wishlist) {
-      wishlist = await Wishlist.create({
-        user: req.user._id,
-        products: [new mongoose.Types.ObjectId(productId)],
-      });
-      logger.info('New wishlist created', { userId: req.user._id });
-    } else {
-      // Check if product is already in wishlist
-      if (wishlist.products.some(id => id.toString() === productId)) {
-        throw new AppError('Product already in wishlist', 400);
-      }
-
-      // Add product to wishlist
-      wishlist.products.push(new mongoose.Types.ObjectId(productId));
-      await wishlist.save();
-      logger.info('Product added to wishlist', { 
-        userId: req.user._id,
-        productId
-      });
-    }
-
-    // Populate product details
-    await wishlist.populate({
-      path: 'products',
-      select: 'name description price offerPrice images brand category',
-    });
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        wishlist,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Remove product from wishlist
-export const removeFromWishlist = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const { productId } = req.params;
-
-    const wishlist = await Wishlist.findOne({ user: req.user._id });
-    if (!wishlist) {
-      throw new AppError('Wishlist not found', 404);
-    }
-
-    // Check if product is in wishlist
-    if (!wishlist.products.some(id => id.toString() === productId)) {
-      throw new AppError('Product not in wishlist', 404);
-    }
-
-    // Remove product from wishlist
-    wishlist.products = wishlist.products.filter(
-      (id: mongoose.Types.ObjectId) => id.toString() !== productId
-    );
-    await wishlist.save();
-
-    logger.info('Product removed from wishlist', { 
-      userId: req.user._id,
-      productId
-    });
-
-    // Populate remaining products
-    await wishlist.populate({
-      path: 'products',
-      select: 'name description price offerPrice images brand category',
-    });
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        wishlist,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Clear wishlist
-export const clearWishlist = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const wishlist = await Wishlist.findOne({ user: req.user._id });
-    if (!wishlist) {
-      throw new AppError('Wishlist not found', 404);
-    }
-
-    const productCount = wishlist.products.length;
-    wishlist.products = [];
-    await wishlist.save();
-
-    logger.info('Wishlist cleared', { 
-      userId: req.user._id,
-      productCount
-    });
-
-    res.status(200).json({
+  if (!wishlist) {
+    logger.info('Wishlist not found for user', { userId });
+    return res.status(200).json({
       status: 'success',
       data: {
         wishlist: {
           products: [],
-          productCount: 0,
-        },
-      },
+          productCount: 0
+        }
+      }
     });
-  } catch (error) {
-    next(error);
   }
-};
 
-// Check if product is in wishlist
-export const checkWishlistItem = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const { productId } = req.params;
+  return res.status(200).json({
+    status: 'success',
+    data: { wishlist }
+  });
+});
 
-    const wishlist = await Wishlist.findOne({ user: req.user._id });
-    if (!wishlist) {
-      logger.info('Wishlist not found for user', { userId: req.user._id });
-      res.status(200).json({
-        status: 'success',
-        data: {
-          inWishlist: false,
-        },
-      });
-      return;
+// Add product to wishlist
+export const addToWishlist = catchAsync(async (req: Request, res: Response) => {
+  const userId = (req as any).user?._id;
+  if (!userId) {
+    throw new AppError('User not authenticated', 401);
+  }
+
+  const { productId } = req.body;
+
+  let wishlist = await Wishlist.findOne({ user: userId });
+
+  if (!wishlist) {
+    wishlist = await Wishlist.create({
+      user: userId,
+      products: [productId]
+    });
+    logger.info('New wishlist created', { userId });
+  } else {
+    // Check if product already exists in wishlist
+    if (wishlist.products.includes(productId)) {
+      throw new AppError('Product already in wishlist', 400);
     }
 
-    const inWishlist = wishlist.products.some(id => id.toString() === productId);
+    wishlist.products.push(productId);
+    await wishlist.save();
+  }
 
-    logger.info('Wishlist item check', { 
-      userId: req.user._id,
-      productId,
-      inWishlist
-    });
+  logger.info('Product added to wishlist', {
+    userId,
+    productId
+  });
 
-    res.status(200).json({
+  return res.status(200).json({
+    status: 'success',
+    data: { wishlist }
+  });
+});
+
+// Remove product from wishlist
+export const removeFromWishlist = catchAsync(async (req: Request, res: Response) => {
+  const userId = (req as any).user?._id;
+  if (!userId) {
+    throw new AppError('User not authenticated', 401);
+  }
+
+  const { productId } = req.params;
+
+  const wishlist = await Wishlist.findOne({ user: userId });
+
+  if (!wishlist) {
+    throw new AppError('Wishlist not found', 404);
+  }
+
+  // Remove product from wishlist
+  wishlist.products = wishlist.products.filter(
+    (id) => id.toString() !== productId
+  );
+
+  await wishlist.save();
+
+  logger.info('Product removed from wishlist', {
+    userId,
+    productId
+  });
+
+  return res.status(200).json({
+    status: 'success',
+    data: { wishlist }
+  });
+});
+
+// Clear wishlist
+export const clearWishlist = catchAsync(async (req: Request, res: Response) => {
+  const userId = (req as any).user?._id;
+  if (!userId) {
+    throw new AppError('User not authenticated', 401);
+  }
+
+  const wishlist = await Wishlist.findOne({ user: userId });
+
+  if (!wishlist) {
+    logger.info('Wishlist not found for user', { userId });
+    return res.status(200).json({
       status: 'success',
       data: {
-        inWishlist,
-      },
+        wishlist: {
+          products: [],
+          productCount: 0
+        }
+      }
     });
-  } catch (error) {
-    next(error);
   }
-}; 
+
+  wishlist.products = [];
+  await wishlist.save();
+
+  logger.info('Wishlist cleared', {
+    userId
+  });
+
+  return res.status(200).json({
+    status: 'success',
+    data: { wishlist }
+  });
+});
+
+// Check if product is in wishlist
+export const checkWishlistItem = catchAsync(async (req: Request, res: Response) => {
+  const userId = (req as any).user?._id;
+  if (!userId) {
+    throw new AppError('User not authenticated', 401);
+  }
+
+  const { productId } = req.params;
+
+  const wishlist = await Wishlist.findOne({ user: userId });
+  if (!wishlist) {
+    logger.info('Wishlist not found for user', { userId });
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        inWishlist: false
+      }
+    });
+  }
+
+  const inWishlist = wishlist.products.some(id => id.toString() === productId);
+
+  logger.info('Wishlist item check', { 
+    userId,
+    productId,
+    inWishlist
+  });
+
+  return res.status(200).json({
+    status: 'success',
+    data: {
+      inWishlist
+    }
+  });
+}); 

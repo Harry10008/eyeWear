@@ -6,8 +6,8 @@ const router = express.Router();
 const adminController = new AdminController();
 
 // Public routes
-router.post('/register', adminController.register);
-router.post('/login', adminController.login);
+router.post('/register', adminController.register);//ok
+router.post('/login', adminController.login);//ok
 router.post('/forgot-password', adminController.forgotPassword);
 router.post('/reset-password', adminController.resetPassword);
 
@@ -15,7 +15,7 @@ router.post('/reset-password', adminController.resetPassword);
 router.use(authenticate);
 
 // Verify admin token
-router.get('/verify-token', requireAuth, adminController.getProfile);
+router.get('/verify-token', requireAuth, adminController.getProfile);//ok
 
 // Admin only routes
 router.use(authorize('admin'));

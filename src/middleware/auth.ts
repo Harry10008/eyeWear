@@ -32,6 +32,7 @@ export const authenticate = async (
   next: NextFunction
 ) => {
   try {
+    console.log("in Authenticate part")
     const token = req.header('Authorization')?.replace('Bearer ', '');
 
     if (!token) {

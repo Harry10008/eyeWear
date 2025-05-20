@@ -227,3 +227,75 @@
 {"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 14:02:33"}
 {"level":"info","message":"Fetching products with filters","query":{},"timestamp":"2025-05-20 14:02:39"}
 {"level":"info","message":"::1 - - [20/May/2025:08:32:39 +0000] \"GET /api/products HTTP/1.1\" 200 820 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 14:02:39"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 15:24:04"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 15:24:04"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 15:25:45"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 15:25:45"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 15:32:30"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 15:32:30"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 15:36:23"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 15:36:23"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 15:37:31"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 15:37:31"}
+{"level":"info","message":"Email sent to duredev23@mailinator.com","timestamp":"2025-05-20 15:39:51"}
+{"level":"info","message":"::1 - - [20/May/2025:10:09:51 +0000] \"POST /api/auth/register HTTP/1.1\" 201 664 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 15:39:51"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Please verify your email before logging in","stack":"Error: Please verify your email before logging in\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:97:15)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"fail","statusCode":403,"timestamp":"2025-05-20 15:40:09"}
+{"level":"info","message":"::1 - - [20/May/2025:10:10:09 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 15:40:09"}
+{"level":"info","message":"::1 - - [20/May/2025:10:12:16 +0000] \"POST /api/auth/login HTTP/1.1\" 200 663 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 15:42:16"}
+{"level":"info","message":"Email sent to dureadmin3@mailinator.com","timestamp":"2025-05-20 15:44:57"}
+{"level":"info","message":"::1 - - [20/May/2025:10:14:57 +0000] \"POST /api/admin/register HTTP/1.1\" 201 449 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 15:44:57"}
+{"level":"info","message":"::1 - - [20/May/2025:10:20:11 +0000] \"POST /api/admin/login HTTP/1.1\" 200 448 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 15:50:11"}
+{"level":"info","message":"User authenticated","role":"admin","timestamp":"2025-05-20 15:52:23","userId":"682c561cdc9157d5b2af9d2c"}
+{"level":"info","message":"::1 - - [20/May/2025:10:22:23 +0000] \"GET /api/admin/verify-token HTTP/1.1\" 200 236 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 15:52:23"}
+{"level":"error","message":"[404] User not found","timestamp":"2025-05-20 15:52:50"}
+{"level":"info","message":"::1 - - [20/May/2025:10:22:50 +0000] \"POST /api/products HTTP/1.1\" 404 44 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 15:52:50"}
+{"level":"info","message":"User authenticated","role":"admin","timestamp":"2025-05-20 15:53:07","userId":"682c561cdc9157d5b2af9d2c"}
+{"level":"info","message":"User authorized","requiredRoles":["admin"],"role":"admin","timestamp":"2025-05-20 15:53:07","userId":"682c561cdc9157d5b2af9d2c"}
+{"body":{"brand":"Ray-Ban","bridgeWidth":18,"category":"60c72b2f9b1e8b002a5e56b1","description":"Stylish and durable sunglasses with UV protection, perfect for sunny days.","features":["UV Protection","Scratch Resistant","Lightweight Frame"],"frameColor":"Black","frameMaterial":"Metal","gender":"men","images":["https://example.com/images/product1.jpg","https://example.com/images/product2.jpg"],"isActive":true,"lensColor":"Green","lensType":"Polarized","lensWidth":55,"name":"Aviator Sunglasses","offerPrice":99,"price":120,"specifications":{"dimensions":"55-18-140","material":"Metal Alloy","warranty":"1 year manufacturer warranty","weight":25},"stock":50,"subCategory":"60c72b3c9b1e8b002a5e56b2","templeLength":140,"type":"sunglasses"},"level":"info","message":"Creating new product","timestamp":"2025-05-20 15:53:07"}
+{"body":{"brand":"Ray-Ban","bridgeWidth":18,"category":"60c72b2f9b1e8b002a5e56b1","description":"Stylish and durable sunglasses with UV protection, perfect for sunny days.","features":["UV Protection","Scratch Resistant","Lightweight Frame"],"frameColor":"Black","frameMaterial":"Metal","gender":"men","images":["https://example.com/images/product1.jpg","https://example.com/images/product2.jpg"],"isActive":true,"lensColor":"Green","lensType":"Polarized","lensWidth":55,"name":"Aviator Sunglasses","offerPrice":99,"price":120,"specifications":{"dimensions":"55-18-140","material":"Metal Alloy","warranty":"1 year manufacturer warranty","weight":25},"stock":50,"subCategory":"60c72b3c9b1e8b002a5e56b2","templeLength":140,"type":"sunglasses"},"level":"info","message":"Creating new product","timestamp":"2025-05-20 15:53:07"}
+{"level":"info","message":"Product created successfully","productId":"682c580bdc9157d5b2af9d38","timestamp":"2025-05-20 15:53:07"}
+{"level":"info","message":"Product created successfully","productId":"682c580bdc9157d5b2af9d38","timestamp":"2025-05-20 15:53:07"}
+{"level":"info","message":"::1 - - [20/May/2025:10:23:07 +0000] \"POST /api/products HTTP/1.1\" 201 816 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 15:53:07"}
+{"level":"info","message":"Fetching products with filters","query":{},"timestamp":"2025-05-20 15:53:44"}
+{"level":"info","message":"Fetching products with filters","query":{},"timestamp":"2025-05-20 15:53:44"}
+{"level":"info","message":"::1 - - [20/May/2025:10:23:44 +0000] \"GET /api/products HTTP/1.1\" 200 820 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 15:53:44"}
+{"level":"info","message":"::1 - - [20/May/2025:10:50:56 +0000] \"POST /api/cart HTTP/1.1\" 404 148 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:20:56"}
+{"level":"info","message":"::1 - - [20/May/2025:10:51:23 +0000] \"POST /api/cart/ HTTP/1.1\" 404 149 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:21:23"}
+{"level":"info","message":"::1 - - [20/May/2025:10:53:41 +0000] \"POST /api/cart HTTP/1.1\" 404 148 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:23:41"}
+{"level":"info","message":"::1 - - [20/May/2025:10:53:47 +0000] \"POST /api/cart/ HTTP/1.1\" 404 149 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:23:47"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 16:28:30"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 16:28:31"}
+{"level":"info","message":"::1 - - [20/May/2025:11:00:34 +0000] \"POST /api/cart/ HTTP/1.1\" 404 149 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:30:34"}
+{"level":"info","message":"::1 - - [20/May/2025:11:00:48 +0000] \"POST /api/cart/ HTTP/1.1\" 404 149 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:30:48"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 16:32:12"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 16:32:12"}
+{"level":"info","message":"::1 - - [20/May/2025:11:02:25 +0000] \"POST /api/cart/ HTTP/1.1\" 404 149 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:32:25"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 16:36:46"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 16:36:46"}
+{"level":"info","message":"::1 - - [20/May/2025:11:06:51 +0000] \"POST /api/cart/ HTTP/1.1\" 404 149 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:36:51"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 16:37:51"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 16:37:51"}
+{"level":"info","message":"::1 - - [20/May/2025:11:07:52 +0000] \"POST /api/cart/add HTTP/1.1\" 404 152 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:37:52"}
+{"level":"info","message":"::1 - - [20/May/2025:11:09:10 +0000] \"POST /api/cart/add HTTP/1.1\" 404 152 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:39:10"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 16:44:02"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 16:44:02"}
+{"level":"info","message":"::1 - - [20/May/2025:11:16:19 +0000] \"POST /api/cart/add HTTP/1.1\" 404 152 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 16:46:19"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 17:07:14"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 17:07:14"}
+{"level":"info","message":"::1 - - [20/May/2025:12:18:56 +0000] \"POST /api/v1/cart/add HTTP/1.1\" 404 155 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 17:48:56"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 17:49:26"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 17:49:26"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 17:49:56"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 17:49:56"}
+{"level":"info","message":"::1 - - [20/May/2025:12:20:29 +0000] \"POST /api/v1/cart/add HTTP/1.1\" 404 155 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 17:50:29"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 17:51:39"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 17:51:39"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 17:53:10"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 17:53:10"}
+{"level":"info","message":"::1 - - [20/May/2025:12:23:22 +0000] \"POST /api/v1/cart/add HTTP/1.1\" 404 155 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 17:53:22"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 18:11:25"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 18:11:25"}
+{"level":"info","message":"User authenticated","role":"user","timestamp":"2025-05-20 18:11:46","userId":"682c54ebdc9157d5b2af9d20"}
+{"level":"info","message":"Creating new cart","timestamp":"2025-05-20 18:11:46","userId":"682c54ebdc9157d5b2af9d20"}
+{"cartId":"682c788a8f60f8f0098c0325","level":"info","message":"Cart created successfully","timestamp":"2025-05-20 18:11:46"}
+{"level":"info","message":"::1 - - [20/May/2025:12:41:46 +0000] \"POST /api/v1/cart/add HTTP/1.1\" 200 392 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-20 18:11:46"}

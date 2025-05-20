@@ -16,7 +16,7 @@ import { reviewSchema } from '../validations/review.schema';
 const router = express.Router();
 
 // Public routes
-router.get('/', getProducts);
+router.get('/', getProducts); //ok
 router.get('/:id', getProduct);
 router.get('/:id/recommendations', getRecommendations);
 
@@ -28,7 +28,7 @@ router.post('/:id/reviews', requireAuth, validateRequest(reviewSchema), addRevie
 
 // Admin routes - require admin role
 router.use(authorize('admin'));
-router.post('/', validateRequest(productSchema), createProduct);
+router.post('/', validateRequest(productSchema), createProduct);//ok
 router.put('/:id', validateRequest(productSchema), updateProduct);
 router.delete('/:id', deleteProduct);
 

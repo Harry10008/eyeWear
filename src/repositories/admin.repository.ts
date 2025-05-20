@@ -1,39 +1,169 @@
-import { User } from '../models/user.model';
+import { User, IUser } from '../models/user.model';
 import { Order } from '../models/order.model';
-import { Product } from '../models/product.model';
-import { UserListDTO, AdminDashboardStatsDTO } from '../dto/admin.dto';
-import { Admin, IAdmin } from '../models/admin.model';
+import { Product, IProduct } from '../models/product.model';
 import { 
-  RegisterAdminDTO, 
-  UpdateAdminProfileDTO, 
+  UserListDTO, 
+  AdminDashboardStatsDTO, 
+  AdminProductStatsDTO, 
+  AdminUserStatsDTO,
+  RegisterAdminDTO,
+  UpdateAdminProfileDTO,
   AdminResponseDTO
-} from '../dto/admin.dto';
+} from '../dtos/admin.dto';
+import { Admin, IAdmin } from '../models/admin.model';
 import { AppError } from '../utils/AppError';
 import { Document } from 'mongoose';
 
 export class AdminRepository {
   async getDashboardStats(): Promise<AdminDashboardStatsDTO> {
-    const [totalUsers, totalOrders, totalProducts, recentOrders] = await Promise.all([
-      User.countDocuments(),
+    const [
+      totalOrders,
+      totalRevenue,
+      totalCustomers,
+      recentOrders,
+      topProducts,
+      salesByCategory,
+      monthlySales
+    ] = await Promise.all([
       Order.countDocuments(),
-      Product.countDocuments(),
+      Order.aggregate([
+        { $match: { paymentStatus: 'paid' } },
+        { $group: { _id: null, total: { $sum: '$total' } } }
+      ]),
+      User.countDocuments(),
       Order.find()
         .sort({ createdAt: -1 })
         .limit(5)
-        .populate('user', 'fullName email')
-        .lean()
+        .populate('user', 'fullName'),
+      Product.aggregate([
+        { $group: { _id: '$category', count: { $sum: 1 } } }
+      ]),
+      Order.aggregate([
+        { $match: { paymentStatus: 'paid' } },
+        { $group: { _id: '$category', total: { $sum: '$total' } } }
+      ]),
+      Order.aggregate([
+        { $match: { paymentStatus: 'paid' } },
+        {
+          $group: {
+            _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } },
+            sales: { $sum: '$total' }
+          }
+        },
+        { $sort: { _id: 1 } }
+      ])
+    ]);
+
+    return {
+      totalOrders,
+      totalRevenue: totalRevenue[0]?.total || 0,
+      totalCustomers,
+      recentOrders: recentOrders.map(order => ({
+        id: order._id.toString(),
+        customerName: (order.user as IUser).fullName,
+        amount: order.total,
+        status: order.orderStatus as 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled',
+        createdAt: order.createdAt
+      })),
+      topProducts: topProducts.map(product => ({
+        id: product._id.toString(),
+        name: product.name,
+        totalSold: product.totalSold,
+        revenue: product.price * product.totalSold
+      })),
+      salesByCategory: salesByCategory.map(category => ({
+        category: category._id,
+        totalSales: category.total,
+        percentage: (category.total / totalRevenue[0]?.total) * 100
+      })),
+      monthlySales: monthlySales.map(month => ({
+        month: month._id,
+        sales: month.sales
+      }))
+    };
+  }
+
+  async getProductStats(): Promise<AdminProductStatsDTO> {
+    const [
+      totalProducts,
+      categories,
+      lowStockProducts,
+      outOfStockProducts,
+      topSellingProducts,
+      categoryDistribution
+    ] = await Promise.all([
+      Product.countDocuments(),
+      Product.distinct('category'),
+      Product.countDocuments({ stock: { $lt: 10 } }),
+      Product.countDocuments({ stock: 0 }),
+      Product.find()
+        .sort({ totalSold: -1 })
+        .limit(5),
+      Product.aggregate([
+        { $group: { _id: '$category', count: { $sum: 1 } } }
+      ])
+    ]);
+
+    return {
+      totalProducts,
+      totalCategories: categories.length,
+      lowStockProducts,
+      outOfStockProducts,
+      topSellingProducts: topSellingProducts.map((product: IProduct) => ({
+        id: product._id.toString(),
+        name: product.name,
+        totalSold: product.totalSold,
+        revenue: product.price * product.totalSold
+      })),
+      categoryDistribution: categoryDistribution.map((category: { _id: string; count: number }) => ({
+        category: category._id,
+        count: category.count,
+        percentage: (category.count / totalProducts) * 100
+      }))
+    };
+  }
+
+  async getUserStats(): Promise<AdminUserStatsDTO> {
+    const [
+      totalUsers,
+      activeUsers,
+      newUsers,
+      topCustomers,
+      userGrowth
+    ] = await Promise.all([
+      User.countDocuments(),
+      User.countDocuments({ lastLogin: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } }),
+      User.countDocuments({ createdAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } }),
+      User.aggregate([
+        { $lookup: { from: 'orders', localField: '_id', foreignField: 'user', as: 'orders' } },
+        { $project: { name: 1, totalOrders: { $size: '$orders' }, totalSpent: { $sum: '$orders.total' } } },
+        { $sort: { totalSpent: -1 } },
+        { $limit: 5 }
+      ]),
+      User.aggregate([
+        {
+          $group: {
+            _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } },
+            newUsers: { $sum: 1 }
+          }
+        },
+        { $sort: { _id: 1 } }
+      ])
     ]);
 
     return {
       totalUsers,
-      totalOrders,
-      totalProducts,
-      recentOrders: recentOrders.map(order => ({
-        id: order._id.toString(),
-        customerName: (order.user as { fullName: string }).fullName,
-        amount: order.total,
-        status: order.orderStatus,
-        createdAt: order.createdAt
+      activeUsers,
+      newUsers,
+      topCustomers: topCustomers.map(customer => ({
+        id: customer._id.toString(),
+        name: customer.name,
+        totalOrders: customer.totalOrders,
+        totalSpent: customer.totalSpent
+      })),
+      userGrowth: userGrowth.map(month => ({
+        month: month._id,
+        newUsers: month.newUsers
       }))
     };
   }

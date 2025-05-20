@@ -25,6 +25,7 @@ export interface IProduct extends Document {
   features?: string[];
   images?: string[];
   stock?: number;
+  totalSold: number;
   isActive?: boolean;
   ratings?: {
     average: number;
@@ -132,6 +133,11 @@ const productSchema = new Schema<IProduct>(
     stock: {
       type: Number,
       min: [0, 'Stock cannot be negative'],
+      default: 0,
+    },
+    totalSold: {
+      type: Number,
+      min: [0, 'Total sold cannot be negative'],
       default: 0,
     },
     isActive: {

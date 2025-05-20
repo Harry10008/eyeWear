@@ -1,62 +1,26 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { IUser } from './user.model';
-import { IProduct } from './product.model';
-
-export interface IOrderItem {
-  product: mongoose.Types.ObjectId | IProduct;
-  quantity: number;
-  price: number;
-  lensType?: string;
-  lensColor?: string;
-  power?: {
-    leftEye?: {
-      sphere?: number;
-      cylinder?: number;
-      axis?: number;
-    };
-    rightEye?: {
-      sphere?: number;
-      cylinder?: number;
-      axis?: number;
-    };
-  };
-}
-
-export interface IAddress {
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  zipCode: string;
-  phone: string;
-}
+import { IAddress, IOrderItem } from '../dtos/order.dto';
 
 export interface IOrder extends Document {
   user: mongoose.Types.ObjectId | IUser;
   items: IOrderItem[];
   shippingAddress: IAddress;
   billingAddress: IAddress;
-  paymentMethod: 'credit_card' | 'debit_card' | 'upi' | 'net_banking';
-  paymentStatus: 'pending' | 'completed' | 'failed' | 'refunded';
-  paymentDetails?: {
-    transactionId: string;
-    paymentGateway: string;
-    paymentDate: Date;
-  };
-  orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  shippingStatus: 'pending' | 'processing' | 'shipped' | 'delivered';
-  trackingNumber?: string;
-  shippingMethod: 'standard' | 'express' | 'next_day';
+  paymentMethod: string;
+  shippingMethod: string;
   shippingCost: number;
   subtotal: number;
   tax: number;
-  discount?: number;
   total: number;
   notes?: string;
-  estimatedDeliveryDate?: Date;
-  deliveredAt?: Date;
+  orderStatus: string;
+  paymentStatus: string;
+  shippingStatus: string;
+  trackingNumber?: string;
+  estimatedDeliveryDate: Date;
   cancelledAt?: Date;
-  refundedAt?: Date;
+  cancellationReason?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -189,47 +153,6 @@ const orderSchema = new Schema<IOrder>(
       },
       required: [true, 'Payment method is required'],
     },
-    paymentStatus: {
-      type: String,
-      enum: {
-        values: ['pending', 'completed', 'failed', 'refunded'],
-        message: 'Invalid payment status',
-      },
-      default: 'pending',
-    },
-    paymentDetails: {
-      transactionId: {
-        type: String,
-        trim: true,
-      },
-      paymentGateway: {
-        type: String,
-        trim: true,
-      },
-      paymentDate: {
-        type: Date,
-      },
-    },
-    orderStatus: {
-      type: String,
-      enum: {
-        values: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
-        message: 'Invalid order status',
-      },
-      default: 'pending',
-    },
-    shippingStatus: {
-      type: String,
-      enum: {
-        values: ['pending', 'processing', 'shipped', 'delivered'],
-        message: 'Invalid shipping status',
-      },
-      default: 'pending',
-    },
-    trackingNumber: {
-      type: String,
-      trim: true,
-    },
     shippingMethod: {
       type: String,
       enum: {
@@ -253,10 +176,6 @@ const orderSchema = new Schema<IOrder>(
       required: [true, 'Tax is required'],
       min: [0, 'Tax cannot be negative'],
     },
-    discount: {
-      type: Number,
-      min: [0, 'Discount cannot be negative'],
-    },
     total: {
       type: Number,
       required: [true, 'Total is required'],
@@ -266,17 +185,44 @@ const orderSchema = new Schema<IOrder>(
       type: String,
       trim: true,
     },
+    orderStatus: {
+      type: String,
+      enum: {
+        values: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
+        message: 'Invalid order status',
+      },
+      default: 'pending',
+    },
+    paymentStatus: {
+      type: String,
+      enum: {
+        values: ['pending', 'paid', 'failed', 'refunded'],
+        message: 'Invalid payment status',
+      },
+      default: 'pending',
+    },
+    shippingStatus: {
+      type: String,
+      enum: {
+        values: ['pending', 'processing', 'shipped', 'delivered'],
+        message: 'Invalid shipping status',
+      },
+      default: 'pending',
+    },
+    trackingNumber: {
+      type: String,
+      trim: true,
+    },
     estimatedDeliveryDate: {
       type: Date,
-    },
-    deliveredAt: {
-      type: Date,
+      required: true,
     },
     cancelledAt: {
       type: Date,
     },
-    refundedAt: {
-      type: Date,
+    cancellationReason: {
+      type: String,
+      trim: true,
     },
   },
   {
@@ -299,8 +245,8 @@ orderSchema.virtual('orderAge').get(function (this: IOrder) {
 
 // Pre-save middleware to calculate total
 orderSchema.pre('save', function (next) {
-  if (this.isModified('subtotal') || this.isModified('tax') || this.isModified('discount')) {
-    this.total = this.subtotal + this.tax + this.shippingCost - (this.discount || 0);
+  if (this.isModified('subtotal') || this.isModified('tax') || this.isModified('shippingCost')) {
+    this.total = this.subtotal + this.tax + this.shippingCost;
   }
   next();
 });
@@ -310,7 +256,7 @@ orderSchema.pre('save', function (next) {
   if (this.isModified('orderStatus')) {
     switch (this.orderStatus) {
       case 'delivered':
-        this.deliveredAt = new Date();
+        this.estimatedDeliveryDate = new Date();
         break;
       case 'cancelled':
         this.cancelledAt = new Date();
@@ -318,7 +264,7 @@ orderSchema.pre('save', function (next) {
     }
   }
   if (this.isModified('paymentStatus') && this.paymentStatus === 'refunded') {
-    this.refundedAt = new Date();
+    this.cancellationReason = 'Refunded';
   }
   next();
 });

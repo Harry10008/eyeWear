@@ -4,7 +4,6 @@ import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
 import { rateLimit } from 'express-rate-limit';
-import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
 import { notFoundHandler } from './middleware/notFoundHandler';
 
@@ -16,6 +15,7 @@ import categoryRoutes from './routes/category.routes';
 import cartRoutes from './routes/cart.routes';
 import wishlistRoutes from './routes/wishlist.routes';
 import adminRoutes from './routes/admin.routes';
+import orderRoutes from './routes/order.routes';
 
 const app: Application = express();
 
@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 
 // Logging middleware
-app.use(morgan('combined', { stream: { write: (message) => logger.info(message.trim()) } }));
+app.use(morgan('dev'));
 
 // Routes
 app.use('/api/v1/auth', authRoutes);
@@ -49,6 +49,7 @@ app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/wishlist', wishlistRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/orders', orderRoutes);
 
 // Health check endpoint
 app.get('/health', (_req, res) => {

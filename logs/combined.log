@@ -1,0 +1,134 @@
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:08:55"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 14:08:55"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:09:02"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:09:30"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 14:09:30"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:10:19"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:13:36"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 14:13:36"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:15:41"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 14:15:41"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:15:41"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:44:53"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 14:44:53"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:45:26"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 14:45:26"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:45:49"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 14:45:49"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 14:57:57"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 14:57:57"}
+{"level":"error","message":"[400] \"fullName\" is required, \"email\" is required, \"password\" is required, \"confirmPassword\" is required, \"mobileNumber\" is required, \"dateOfBirth\" is required, \"gender\" is required","timestamp":"2025-05-19 15:01:46"}
+{"level":"info","message":"::1 - - [19/May/2025:09:31:46 +0000] \"POST /api/auth/register HTTP/1.1\" 400 219 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 15:01:46"}
+{"level":"error","message":"[400] \"password\" length must be at least 8 characters long, \"password\" with value \"duredev\" fails to match the required pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/","timestamp":"2025-05-19 15:05:24"}
+{"level":"info","message":"::1 - - [19/May/2025:09:35:24 +0000] \"POST /api/auth/register HTTP/1.1\" 400 231 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 15:05:24"}
+{"level":"error","message":"[400] \"password\" with value \"duredev1\" fails to match the required pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/","timestamp":"2025-05-19 15:05:45"}
+{"level":"info","message":"::1 - - [19/May/2025:09:35:45 +0000] \"POST /api/auth/register HTTP/1.1\" 400 176 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 15:05:45"}
+{"level":"error","message":"Error sending email: Email template 'welcome' not found","stack":"Error: Email template 'welcome' not found\n    at sendEmail (/home/harry/Documents/eyeWear/src/utils/email.ts:75:13)\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:72:22)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","timestamp":"2025-05-19 15:06:11"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Failed to register user","stack":"Error: Failed to register user\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:82:13)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","status":"error","statusCode":500,"timestamp":"2025-05-19 15:06:11"}
+{"level":"info","message":"::1 - - [19/May/2025:09:36:11 +0000] \"POST /api/auth/register HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 15:06:11"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:06:38"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:06:38"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Email already in use","stack":"Error: Email already in use\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:54:15)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","status":"fail","statusCode":400,"timestamp":"2025-05-19 15:06:46"}
+{"level":"info","message":"::1 - - [19/May/2025:09:36:46 +0000] \"POST /api/auth/register HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 15:06:46"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Failed to register user","stack":"Error: Failed to register user\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:82:13)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","status":"error","statusCode":500,"timestamp":"2025-05-19 15:09:26"}
+{"level":"info","message":"::1 - - [19/May/2025:09:39:26 +0000] \"POST /api/auth/register HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 15:09:26"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:11:49"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:11:49"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:12:15"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:12:15"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Failed to register user","stack":"Error: Failed to register user\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:83:13)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","status":"error","statusCode":500,"timestamp":"2025-05-19 15:12:28"}
+{"level":"info","message":"::1 - - [19/May/2025:09:42:28 +0000] \"POST /api/auth/register HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 15:12:28"}
+{"level":"error","message":"Error sending email: Email template 'welcome' not found","stack":"Error: Email template 'welcome' not found\n    at sendEmail (/home/harry/Documents/eyeWear/src/utils/email.ts:75:13)\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:72:22)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","timestamp":"2025-05-19 15:13:01"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Failed to register user","stack":"Error: Failed to register user\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:83:13)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","status":"error","statusCode":500,"timestamp":"2025-05-19 15:13:01"}
+{"level":"info","message":"::1 - - [19/May/2025:09:43:01 +0000] \"POST /api/auth/register HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 15:13:01"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:13:45"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:13:45"}
+{"level":"error","message":"Error sending email: Email template 'welcome' not found","stack":"Error: Email template 'welcome' not found\n    at sendEmail (/home/harry/Documents/eyeWear/src/utils/email.ts:75:13)\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:72:22)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","timestamp":"2025-05-19 15:14:06"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Failed to register user","stack":"Error: Failed to register user\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:83:13)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","status":"error","statusCode":500,"timestamp":"2025-05-19 15:14:06"}
+{"level":"info","message":"::1 - - [19/May/2025:09:44:06 +0000] \"POST /api/auth/register HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 15:14:06"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:15:18"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:15:18"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:16:15"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:16:16"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:17:13"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:17:13"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:20:52"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:20:52"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:21:50"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:21:50"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:22:13"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:22:13"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:25:12"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:25:12"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 15:42:50"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 15:42:50"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:01:11"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:01:11"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:01:36"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:01:36"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:03:50"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:03:50"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:04:05"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:04:05"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:05:17"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:05:17"}
+{"level":"info","message":"Email sent to duredev23@mailinator.com","timestamp":"2025-05-19 16:06:00"}
+{"level":"info","message":"::1 - - [19/May/2025:10:36:00 +0000] \"POST /api/auth/register HTTP/1.1\" 201 515 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:06:00"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:10:55"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:10:55"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Email already in use","stack":"Error: Email already in use\n    at AuthService.register (/home/harry/Documents/eyeWear/src/services/auth.service.ts:54:15)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.register (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:23:22)","status":"fail","statusCode":400,"timestamp":"2025-05-19 16:10:56"}
+{"level":"info","message":"::1 - - [19/May/2025:10:40:56 +0000] \"POST /api/auth/register HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:10:56"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:20:06"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:20:06"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:20:49"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:20:49"}
+{"level":"info","message":"Email sent to duredev23@mailinator.com","timestamp":"2025-05-19 16:23:35"}
+{"level":"info","message":"::1 - - [19/May/2025:10:53:35 +0000] \"POST /api/auth/register HTTP/1.1\" 201 515 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:23:35"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:27:02"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:27:02"}
+{"level":"info","message":"Email sent to duredev23@mailinator.com","timestamp":"2025-05-19 16:27:48"}
+{"level":"info","message":"::1 - - [19/May/2025:10:57:48 +0000] \"POST /api/auth/register HTTP/1.1\" 201 664 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:27:48"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Failed to login","stack":"Error: Failed to login\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:110:13)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"error","statusCode":500,"timestamp":"2025-05-19 16:32:00"}
+{"level":"info","message":"::1 - - [19/May/2025:11:02:00 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:32:00"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:32:23"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:32:23"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Failed to login","stack":"Error: Failed to login\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:110:13)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"error","statusCode":500,"timestamp":"2025-05-19 16:32:45"}
+{"level":"info","message":"::1 - - [19/May/2025:11:02:45 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:32:45"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:36:22"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:36:23"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:36:44"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:36:44"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Invalid email or password","stack":"Error: Invalid email or password\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:98:15)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"fail","statusCode":401,"timestamp":"2025-05-19 16:37:01"}
+{"level":"info","message":"::1 - - [19/May/2025:11:07:01 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:37:01"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Invalid email or password","stack":"Error: Invalid email or password\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:98:15)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"fail","statusCode":401,"timestamp":"2025-05-19 16:37:36"}
+{"level":"info","message":"::1 - - [19/May/2025:11:07:36 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:37:36"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:39:13"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:39:13"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:39:29"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:39:29"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Invalid email or password","stack":"Error: Invalid email or password\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:105:15)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"fail","statusCode":401,"timestamp":"2025-05-19 16:39:38"}
+{"level":"info","message":"::1 - - [19/May/2025:11:09:38 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:39:38"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:41:08"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:41:08"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Invalid email or password","stack":"Error: Invalid email or password\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:105:15)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"fail","statusCode":401,"timestamp":"2025-05-19 16:41:55"}
+{"level":"info","message":"::1 - - [19/May/2025:11:11:55 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:41:55"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Invalid email or password","stack":"Error: Invalid email or password\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:105:15)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"fail","statusCode":401,"timestamp":"2025-05-19 16:43:02"}
+{"level":"info","message":"::1 - - [19/May/2025:11:13:02 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:43:02"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:45:48"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:45:48"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Invalid email or password","stack":"Error: Invalid email or password\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:96:15)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"fail","statusCode":401,"timestamp":"2025-05-19 16:46:05"}
+{"level":"info","message":"::1 - - [19/May/2025:11:16:05 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:46:05"}
+{"level":"info","message":"Email sent to duredev23@mailinator.com","timestamp":"2025-05-19 16:46:34"}
+{"level":"info","message":"::1 - - [19/May/2025:11:16:34 +0000] \"POST /api/auth/register HTTP/1.1\" 201 664 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:46:34"}
+{"level":"info","message":"::1 - - [19/May/2025:11:16:50 +0000] \"POST /api/auth/login HTTP/1.1\" 200 664 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:46:50"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:51:35"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:51:35"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-19 16:51:44"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-19 16:51:44"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Please verify your email before logging in","stack":"Error: Please verify your email before logging in\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:97:15)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"fail","statusCode":403,"timestamp":"2025-05-19 16:52:18"}
+{"level":"info","message":"::1 - - [19/May/2025:11:22:18 +0000] \"POST /api/auth/login HTTP/1.1\" 500 51 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:52:18"}
+{"level":"info","message":"::1 - - [19/May/2025:11:23:13 +0000] \"POST /api/auth/login HTTP/1.1\" 200 663 \"-\" \"PostmanRuntime/7.44.0\"","timestamp":"2025-05-19 16:53:13"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 11:00:02"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 11:00:02"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-05-20 11:07:44"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2025-05-20 11:07:44"}

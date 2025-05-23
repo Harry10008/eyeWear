@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -10,6 +10,7 @@ export interface IAdmin extends Document {
   isEmailVerified: boolean;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
+  lastLogin?: Date;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -21,21 +22,20 @@ export interface IAdmin extends Document {
 const adminSchema = new Schema<IAdmin>({
   fullName: {
     type: String,
-    required: [true, 'Full name is required'],
+    required: [true, 'Please provide your full name'],
     trim: true
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    required: [true, 'Please provide your email'],
     unique: true,
     lowercase: true,
-    trim: true,
-    match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email']
+    trim: true
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
-    minlength: [8, 'Password must be at least 8 characters long'],
+    required: [true, 'Please provide a password'],
+    minlength: 8,
     select: false
   },
   role: {
@@ -48,7 +48,8 @@ const adminSchema = new Schema<IAdmin>({
     default: false
   },
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
+  lastLogin: Date
 }, {
   timestamps: true
 });
@@ -56,12 +57,13 @@ const adminSchema = new Schema<IAdmin>({
 // Hash password before saving
 adminSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
+
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
-  } catch (error: any) {
-    next(error);
+  } catch (error) {
+    next(error as Error);
   }
 });
 
@@ -110,4 +112,4 @@ adminSchema.methods.generatePasswordResetToken = function(): string {
   return resetToken;
 };
 
-export const Admin = mongoose.model<IAdmin>('Admin', adminSchema); 
+export const Admin = model<IAdmin>('Admin', adminSchema); 

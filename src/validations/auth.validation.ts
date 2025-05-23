@@ -136,14 +136,16 @@ export const authSchema = {
     mobileNumber: Joi.string().pattern(/^\+?[1-9]\d{1,14}$/),
     dateOfBirth: Joi.date().max('now'),
     gender: Joi.string().valid('male', 'female', 'other'),
-    address: Joi.object({
-      street: Joi.string().required(),
-      city: Joi.string().required(),
-      state: Joi.string().required(),
-      country: Joi.string().required(),
-      pincode: Joi.string().required(),
-      isDefault: Joi.boolean()
-    }),
+    addresses: Joi.array().items(
+      Joi.object({
+        street: Joi.string().required(),
+        city: Joi.string().required(),
+        state: Joi.string().required(),
+        country: Joi.string().required(),
+        pincode: Joi.string().required(),
+        isDefault: Joi.boolean()
+      })
+    ),
     profilePicture: Joi.string().uri()
   })
 }; 

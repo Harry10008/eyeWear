@@ -7,7 +7,7 @@ import {
   ForgotPasswordDTO,
   UpdatePasswordDTO,
   UpdateProfileDTO
-} from '../dto/auth.dto';
+} from '../dtos/auth.dto';
 import { AppError } from '../utils/AppError';
 
 export class AuthController {

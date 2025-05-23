@@ -6,13 +6,14 @@ import {
   AdminDashboardStatsDTO, 
   AdminProductStatsDTO, 
   AdminUserStatsDTO,
-  RegisterAdminDTO,
   UpdateAdminProfileDTO,
   AdminResponseDTO
 } from '../dtos/admin.dto';
 import { Admin, IAdmin } from '../models/admin.model';
 import { AppError } from '../utils/AppError';
-import { Document } from 'mongoose';
+import jwt, { SignOptions } from 'jsonwebtoken';
+import { config } from '../config/config';
+import bcrypt from 'bcryptjs';
 
 export class AdminRepository {
   async getDashboardStats(): Promise<AdminDashboardStatsDTO> {
@@ -196,31 +197,27 @@ export class AdminRepository {
     };
   }
 
-  async findByEmail(email: string, includePassword: boolean = false): Promise<IAdmin | null> {
-    const admin = await Admin.findOne({ email })
-      .select(includePassword ? '+password' : '-password')
-      .exec();
-    return admin as (Document & IAdmin) | null;
+  async findById(id: string): Promise<IAdmin | null> {
+    return Admin.findById(id).lean();
   }
 
-  async createAdmin(adminData: RegisterAdminDTO): Promise<IAdmin> {
-    return Admin.create({
-      ...adminData,
-      role: adminData.role || 'admin',
-      isEmailVerified: false
-    });
+  async findByEmail(email: string, selectPassword = false): Promise<IAdmin | null> {
+    return Admin.findOne({ email }).select(selectPassword ? '+password' : '').lean();
+  }
+
+  async createAdmin(adminData: Partial<IAdmin>): Promise<IAdmin> {
+    const admin = await Admin.create(adminData);
+    return admin.toObject();
   }
 
   async validatePassword(admin: IAdmin, password: string): Promise<boolean> {
-    try {
-      return await admin.comparePassword(password);
-    } catch (error) {
-      throw error;
-    }
+    return bcrypt.compare(password, admin.password);
   }
 
   generateToken(admin: IAdmin): string {
-    return admin.generateAuthToken();
+    const payload = { id: admin._id };
+    const options: SignOptions = { expiresIn: `${config.jwt.expiresIn}s` };
+    return jwt.sign(payload, config.jwt.secret, options);
   }
 
   async createPasswordResetToken(email: string): Promise<string> {
@@ -229,13 +226,24 @@ export class AdminRepository {
       throw new AppError('No admin found with that email address', 404);
     }
 
-    const resetToken = admin.generatePasswordResetToken();
-    await admin.save();
+    const payload = { id: admin._id };
+    const options: SignOptions = { expiresIn: '1h' };
+    const resetToken = jwt.sign(payload, config.jwt.secret, options);
+
+    await Admin.findByIdAndUpdate(admin._id, {
+      $set: {
+        resetPasswordToken: resetToken,
+        resetPasswordExpires: new Date(Date.now() + 3600000) // 1 hour
+      }
+    });
+
     return resetToken;
   }
 
-  async resetPassword(token: string, password: string): Promise<IAdmin> {
+  async resetPassword(token: string, newPassword: string): Promise<void> {
+    const decoded = jwt.verify(token, config.jwt.secret) as { id: string };
     const admin = await Admin.findOne({
+      _id: decoded.id,
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() }
     });
@@ -244,15 +252,16 @@ export class AdminRepository {
       throw new AppError('Token is invalid or has expired', 400);
     }
 
-    admin.password = password;
-    admin.resetPasswordToken = undefined;
-    admin.resetPasswordExpires = undefined;
-    await admin.save();
-
-    return admin;
+    await Admin.findByIdAndUpdate(admin._id, {
+      $set: {
+        password: newPassword,
+        resetPasswordToken: undefined,
+        resetPasswordExpires: undefined
+      }
+    });
   }
 
-  async updatePassword(adminId: string, currentPassword: string, newPassword: string): Promise<IAdmin> {
+  async updatePassword(adminId: string, currentPassword: string, newPassword: string): Promise<void> {
     const admin = await Admin.findById(adminId).select('+password');
     if (!admin) {
       throw new AppError('Admin not found', 404);
@@ -263,10 +272,9 @@ export class AdminRepository {
       throw new AppError('Current password is incorrect', 401);
     }
 
-    admin.password = newPassword;
-    await admin.save();
-
-    return admin;
+    await Admin.findByIdAndUpdate(adminId, {
+      $set: { password: newPassword }
+    });
   }
 
   async updateProfile(adminId: string, updateData: UpdateAdminProfileDTO): Promise<AdminResponseDTO> {
@@ -274,7 +282,7 @@ export class AdminRepository {
       adminId,
       { $set: updateData },
       { new: true, runValidators: true }
-    ).select('-password');
+    ).select('-password').lean();
 
     if (!admin) {
       throw new AppError('Admin not found', 404);
@@ -284,7 +292,7 @@ export class AdminRepository {
   }
 
   async getProfile(adminId: string): Promise<AdminResponseDTO> {
-    const admin = await Admin.findById(adminId).select('-password');
+    const admin = await Admin.findById(adminId).select('-password').lean();
     if (!admin) {
       throw new AppError('Admin not found', 404);
     }
@@ -294,7 +302,7 @@ export class AdminRepository {
 
   async updateLastLogin(adminId: string): Promise<void> {
     await Admin.findByIdAndUpdate(adminId, {
-      $set: { updatedAt: new Date() }
+      $set: { lastLogin: new Date() }
     });
   }
 

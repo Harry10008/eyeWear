@@ -4,24 +4,41 @@ import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
 import { rateLimit } from 'express-rate-limit';
-import { errorHandler } from './middleware/errorHandler';
-import { notFoundHandler } from './middleware/notFoundHandler';
+import { errorHandler } from './middleware/error.middleware';
+import { notFoundHandler } from './middleware/notFound.middleware';
+import swaggerUi from 'swagger-ui-express';
+import swaggerFile from '../../swagger-output.json';
+import { config } from './config/config';
 
 // Import routes
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
 import productRoutes from './routes/product.routes';
 import categoryRoutes from './routes/category.routes';
-import cartRoutes from './routes/cart.routes';
-import wishlistRoutes from './routes/wishlist.routes';
-import adminRoutes from './routes/admin.routes';
 import orderRoutes from './routes/order.routes';
+import adminRoutes from './routes/admin.routes';
 
 const app: Application = express();
 
+// Body parsing middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Security middleware
-app.use(helmet());
-app.use(cors());
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
+app.use(cors({
+  origin: config.cors.origin,
+  methods: config.cors.methods,
+  allowedHeaders: config.cors.allowedHeaders
+}));
+
+// Compression middleware
+app.use(compression());
+
+// Logging middleware
+app.use(morgan('dev'));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -31,25 +48,20 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Body parsing middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Compression middleware
-app.use(compression());
-
-// Logging middleware
-app.use(morgan('dev'));
+// API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: "EyeWear API Documentation"
+}));
 
 // Routes
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/users', userRoutes);
-app.use('/api/v1/products', productRoutes);
-app.use('/api/v1/categories', categoryRoutes);
-app.use('/api/v1/cart', cartRoutes);
-app.use('/api/v1/wishlist', wishlistRoutes);
-app.use('/api/v1/admin', adminRoutes);
-app.use('/api/v1/orders', orderRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check endpoint
 app.get('/health', (_req, res) => {

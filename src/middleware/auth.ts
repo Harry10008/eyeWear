@@ -4,6 +4,7 @@ import { User, IUser } from '../models/user.model';
 import { Admin, IAdmin } from '../models/admin.model';
 import { AppError } from './errorHandler';
 import { logger } from '../utils/logger';
+import { config } from '../config/config';
 
 interface JwtPayload {
   id: string;
@@ -17,6 +18,7 @@ declare global {
   namespace Express {
     interface Request {
       user?: AuthenticatedUser;
+      admin?: IAdmin;
     }
   }
 }
@@ -32,29 +34,43 @@ export const authenticate = async (
   next: NextFunction
 ) => {
   try {
-    console.log("in Authenticate part")
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-
-    if (!token) {
-      throw new AppError('Authentication required', 401);
+    const authHeader = req.header('Authorization');
+    if (!authHeader) {
+      throw new AppError('No authorization header', 401);
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || 'your-secret-key'
-    ) as JwtPayload;
+    const token = authHeader.replace('Bearer ', '');
+    if (!token) {
+      throw new AppError('No token provided', 401);
+    }
+
+    let decoded: JwtPayload;
+    try {
+      decoded = jwt.verify(token, config.jwt.secret) as JwtPayload;
+    } catch (error) {
+      if (error instanceof jwt.TokenExpiredError) {
+        throw new AppError('Token has expired', 401);
+      }
+      if (error instanceof jwt.JsonWebTokenError) {
+        throw new AppError('Invalid token', 401);
+      }
+      throw error;
+    }
 
     let authenticatedUser: AuthenticatedUser | null = null;
 
-    // Try to find user first
-    const userDoc = await User.findById(decoded.id).select('-password').lean();
-    if (userDoc) {
-      authenticatedUser = userDoc as IUser & { _id: any };
-    } else {
-      // If not found, try to find admin
+    // Check if it's an admin token
+    if (decoded.role === 'admin' || decoded.role === 'super-admin') {
       const adminDoc = await Admin.findById(decoded.id).select('-password').lean();
       if (adminDoc) {
         authenticatedUser = adminDoc as IAdmin & { _id: any };
+        req.admin = adminDoc;
+      }
+    } else {
+      // Try to find user
+      const userDoc = await User.findById(decoded.id).select('-password').lean();
+      if (userDoc) {
+        authenticatedUser = userDoc as IUser & { _id: any };
       }
     }
 
@@ -74,10 +90,10 @@ export const authenticate = async (
     });
     next();
   } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError) {
-      next(new AppError('Invalid token', 401));
-    } else {
+    if (error instanceof AppError) {
       next(error);
+    } else {
+      next(new AppError('Authentication failed', 401));
     }
   }
 };

@@ -219,6 +219,27 @@ router.use(authenticate);
  */
 router.get('/verify-token', requireAuth, adminController.getProfile);
 
+/**
+ * @swagger
+ * /api/admin/verify-email:
+ *   get:
+ *     summary: Verify admin email
+ *     tags: [Admin]
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Email verification token
+ *     responses:
+ *       200:
+ *         description: Email verified successfully
+ *       400:
+ *         description: Invalid or expired token
+ */
+router.get('/verify-email', adminController.verifyEmail);
+
 // Admin only routes
 router.use(authorize('admin'));
 

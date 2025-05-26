@@ -7,6 +7,7 @@ export const config = {
   port: parseInt(process.env.PORT || '5000', 10),
   host: process.env.HOST || 'localhost',
   nodeEnv: process.env.NODE_ENV || 'development',
+  clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
   jwt: {
     secret: process.env.JWT_SECRET || 'your-secret-key',
     expiresIn: parseInt(process.env.JWT_EXPIRES_IN || '3600', 10), // 1 hour

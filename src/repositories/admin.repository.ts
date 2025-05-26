@@ -14,6 +14,7 @@ import { AppError } from '../utils/AppError';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { config } from '../config/config';
 import bcrypt from 'bcryptjs';
+import { sendEmail } from '../utils/email';
 
 export class AdminRepository {
   async getDashboardStats(): Promise<AdminDashboardStatsDTO> {
@@ -206,7 +207,33 @@ export class AdminRepository {
   }
 
   async createAdmin(adminData: Partial<IAdmin>): Promise<IAdmin> {
-    const admin = await Admin.create(adminData);
+    // Create verification token
+    const verificationToken = jwt.sign(
+      { email: adminData.email },
+      config.jwt.secret,
+      { expiresIn: '24h' }
+    );
+
+    // Create admin with verification token
+    const admin = await Admin.create({
+      ...adminData,
+      verificationToken,
+      verificationTokenExpires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+      isEmailVerified: false
+    });
+
+    // Send verification email
+    const verificationUrl = `${config.clientUrl}/admin/verify-email?token=${verificationToken}`;
+    await sendEmail({
+      email: admin.email,
+      subject: 'Verify Your Admin Account',
+      template: 'adminEmailVerification',
+      data: {
+        name: admin.fullName,
+        verificationUrl
+      }
+    });
+
     return admin.toObject();
   }
 
@@ -215,8 +242,11 @@ export class AdminRepository {
   }
 
   generateToken(admin: IAdmin): string {
-    const payload = { id: admin._id };
-    const options: SignOptions = { expiresIn: `${config.jwt.expiresIn}s` };
+    const payload = { 
+      id: admin._id,
+      role: admin.role
+    };
+    const options: SignOptions = { expiresIn: '7d' };
     return jwt.sign(payload, config.jwt.secret, options);
   }
 
@@ -316,5 +346,27 @@ export class AdminRepository {
       createdAt: admin.createdAt,
       updatedAt: admin.updatedAt
     };
+  }
+
+  async verifyEmail(token: string): Promise<void> {
+    const decoded = jwt.verify(token, config.jwt.secret) as { email: string };
+    
+    const admin = await Admin.findOne({
+      email: decoded.email,
+      verificationToken: token,
+      verificationTokenExpires: { $gt: Date.now() }
+    });
+
+    if (!admin) {
+      throw new AppError('Invalid or expired verification token', 400);
+    }
+
+    await Admin.findByIdAndUpdate(admin._id, {
+      $set: {
+        isEmailVerified: true,
+        verificationToken: undefined,
+        verificationTokenExpires: undefined
+      }
+    });
   }
 } 

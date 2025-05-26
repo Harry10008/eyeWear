@@ -191,4 +191,21 @@ export class AdminController {
       next(error);
     }
   };
+
+  verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { token } = req.query;
+      if (!token || typeof token !== 'string') {
+        return next(new AppError('Verification token is required', 400));
+      }
+
+      await this.adminRepository.verifyEmail(token);
+      res.status(200).json({
+        status: 'success',
+        message: 'Email verified successfully'
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 } 

@@ -1,4 +1,4 @@
-# EyeWear Authentication API Documentation
+  # EyeWear Authentication API Documentation
 
 ## Base URL
 ```

@@ -7,7 +7,9 @@ import { rateLimit } from 'express-rate-limit';
 import { errorHandler } from './middleware/error.middleware';
 import { notFoundHandler } from './middleware/notFound.middleware';
 import swaggerUi from 'swagger-ui-express';
-import swaggerFile from '../../swagger-output.json';
+// import swaggerFile from '../../swagger-output.json';
+import {swaggerSpec} from "../swagger";
+
 import { config } from './config/config';
 
 // Import routes
@@ -48,12 +50,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// API Documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, {
-  explorer: true,
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: "EyeWear API Documentation"
-}));
+
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -62,6 +59,13 @@ app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
+
+// API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: "EyeWear API Documentation"
+}));
 
 // Health check endpoint
 app.get('/health', (_req, res) => {

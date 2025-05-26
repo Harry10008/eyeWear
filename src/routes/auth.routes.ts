@@ -10,6 +10,10 @@ const authController = new AuthController();
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *    bearerAuth:
+ *       type: http
+ *       scheme: bearer 
  *   schemas:
  *     RegisterRequest:
  *       type: object
@@ -91,6 +95,8 @@ const authController = new AuthController();
  *   post:
  *     tags:
  *       - Auth
+ *     security:
+ *       - bearerAuth: []
  *     summary: Register a new user
  *     description: Create a new user account with the provided information
  *     requestBody:
@@ -415,14 +421,17 @@ router.patch(
   authController.updatePassword
 );
 
+
 /**
  * @swagger
- * /profile:
- *   patch:
+ * /api/auth/profile:
+ *   
+ *    patch:
  *     summary: Update user profile
  *     tags: [Auth]
  *     security:
  *       - bearerAuth: []
+ *     
  *     requestBody:
  *       required: true
  *       content:

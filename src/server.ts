@@ -30,13 +30,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Swagger Documentation
-const swaggerFile = require('../swagger-output.json');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, {
-  explorer: true,
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: "EyeWear API Documentation"
-}));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -47,9 +40,16 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Swagger Documentation
+import {swaggerSpec} from "../swagger";
+// const swaggerFile = require('../swagger-output.json');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Error handling
 app.use(notFoundHandler);
 app.use(errorHandler);
+
+
 
 // Start server
 const PORT = config.port;

@@ -11,9 +11,10 @@ const authController = new AuthController();
  * @swagger
  * components:
  *   securitySchemes:
- *    bearerAuth:
+ *     bearerAuth:
  *       type: http
- *       scheme: bearer 
+ *       scheme: bearer
+ *       bearerFormat: JWT
  *   schemas:
  *     RegisterRequest:
  *       type: object
@@ -381,7 +382,7 @@ router.post(
 
 /**
  * @swagger
- * /update-password:
+ * /api/auth/update-password:
  *   patch:
  *     summary: Update user password
  *     tags: [Auth]
@@ -410,7 +411,7 @@ router.post(
  *       200:
  *         description: Password updated successfully
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - Authentication required
  *       400:
  *         description: Invalid current password
  */
@@ -421,17 +422,14 @@ router.patch(
   authController.updatePassword
 );
 
-
 /**
  * @swagger
  * /api/auth/profile:
- *   
- *    patch:
+ *   patch:
  *     summary: Update user profile
  *     tags: [Auth]
  *     security:
  *       - bearerAuth: []
- *     
  *     requestBody:
  *       required: true
  *       content:
@@ -478,52 +476,8 @@ router.patch(
  *     responses:
  *       200:
  *         description: Profile updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                 fullName:
- *                   type: string
- *                 email:
- *                   type: string
- *                 mobileNumber:
- *                   type: string
- *                 dateOfBirth:
- *                   type: string
- *                 gender:
- *                   type: string
- *                 addresses:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                       street:
- *                         type: string
- *                       city:
- *                         type: string
- *                       state:
- *                         type: string
- *                       country:
- *                         type: string
- *                       pincode:
- *                         type: string
- *                       isDefault:
- *                         type: boolean
- *                 profilePicture:
- *                   type: string
- *                 isEmailVerified:
- *                   type: boolean
- *                 createdAt:
- *                   type: string
- *                 updatedAt:
- *                   type: string
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - Authentication required
  */
 router.patch(
   '/profile',
@@ -534,7 +488,7 @@ router.patch(
 
 /**
  * @swagger
- * /profile:
+ * /api/auth/profile:
  *   get:
  *     summary: Get user profile
  *     tags: [Auth]
@@ -543,52 +497,8 @@ router.patch(
  *     responses:
  *       200:
  *         description: Profile retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                 fullName:
- *                   type: string
- *                 email:
- *                   type: string
- *                 mobileNumber:
- *                   type: string
- *                 dateOfBirth:
- *                   type: string
- *                 gender:
- *                   type: string
- *                 addresses:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                       street:
- *                         type: string
- *                       city:
- *                         type: string
- *                       state:
- *                         type: string
- *                       country:
- *                         type: string
- *                       pincode:
- *                         type: string
- *                       isDefault:
- *                         type: boolean
- *                 profilePicture:
- *                   type: string
- *                 isEmailVerified:
- *                   type: boolean
- *                 createdAt:
- *                   type: string
- *                 updatedAt:
- *                   type: string
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - Authentication required
  */
 router.get('/profile', authenticate, authController.getProfile);
 

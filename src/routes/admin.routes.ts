@@ -7,6 +7,42 @@ const adminController = new AdminController();
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   schemas:
+ *     Admin:
+ *       type: object
+ *       required:
+ *         - fullName
+ *         - email
+ *         - password
+ *       properties:
+ *         fullName:
+ *           type: string
+ *           minLength: 2
+ *           maxLength: 50
+ *           example: Admin User
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: admin@example.com
+ *         password:
+ *           type: string
+ *           minLength: 8
+ *           pattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$
+ *           example: Admin123!
+ *         role:
+ *           type: string
+ *           enum: [admin, super-admin]
+ *           example: admin
+ */
+
+/**
+ * @swagger
  * tags:
  *   name: Admin
  *   description: Admin management endpoints
@@ -198,24 +234,9 @@ router.use(authenticate);
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                 fullName:
- *                   type: string
- *                 email:
- *                   type: string
- *                 role:
- *                   type: string
- *                 isEmailVerified:
- *                   type: boolean
- *                 createdAt:
- *                   type: string
- *                 updatedAt:
- *                   type: string
+ *               $ref: '#/components/schemas/Admin'
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - Authentication required
  */
 router.get('/verify-token', requireAuth, adminController.getProfile);
 
@@ -268,27 +289,8 @@ router.use(authorize('admin'));
  *     responses:
  *       200:
  *         description: Profile updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                 fullName:
- *                   type: string
- *                 email:
- *                   type: string
- *                 role:
- *                   type: string
- *                 isEmailVerified:
- *                   type: boolean
- *                 createdAt:
- *                   type: string
- *                 updatedAt:
- *                   type: string
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - Authentication required
  *       403:
  *         description: Forbidden - Admin access required
  */
@@ -325,7 +327,7 @@ router.patch('/profile', requireAuth, adminController.updateProfile);
  *       200:
  *         description: Password updated successfully
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - Authentication required
  *       403:
  *         description: Forbidden - Admin access required
  */
@@ -342,34 +344,8 @@ router.patch('/update-password', requireAuth, adminController.updatePassword);
  *     responses:
  *       200:
  *         description: Dashboard statistics retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 totalOrders:
- *                   type: number
- *                 totalRevenue:
- *                   type: number
- *                 totalCustomers:
- *                   type: number
- *                 recentOrders:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                       customerName:
- *                         type: string
- *                       amount:
- *                         type: number
- *                       status:
- *                         type: string
- *                       createdAt:
- *                         type: string
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - Authentication required
  *       403:
  *         description: Forbidden - Admin access required
  */
@@ -399,36 +375,8 @@ router.get('/dashboard', adminController.getDashboardStats);
  *     responses:
  *       200:
  *         description: List of users retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 users:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                       email:
- *                         type: string
- *                       name:
- *                         type: string
- *                       role:
- *                         type: string
- *                       createdAt:
- *                         type: string
- *                       lastLogin:
- *                         type: string
- *                 total:
- *                   type: number
- *                 page:
- *                   type: number
- *                 limit:
- *                   type: number
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - Authentication required
  *       403:
  *         description: Forbidden - Admin access required
  */

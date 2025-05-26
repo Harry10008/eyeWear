@@ -616,3 +616,13 @@
 {"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 11:36:30"}
 {"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 11:36:30"}
 {"level":"info","message":"Email sent to john@example.com","service":"eyewear-api","timestamp":"2025-05-26 11:38:05"}
+{"isOperational":true,"level":"error","message":"Unexpected error: Please verify your email before logging in","service":"eyewear-api","stack":"Error: Please verify your email before logging in\n    at AuthService.login (/home/harry/Documents/eyeWear/src/services/auth.service.ts:97:15)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async AuthController.login (/home/harry/Documents/eyeWear/src/controllers/auth.controller.ts:33:22)","status":"fail","statusCode":403,"timestamp":"2025-05-26 11:44:57"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 12:21:47"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 12:21:47"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 12:21:47"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 12:22:13"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 12:22:13"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 12:22:13"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 12:27:34"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 12:27:34"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 12:27:34"}

@@ -2,10 +2,10 @@
   "name": "eyewear-ecommerce",
   "version": "1.0.0",
   "description": "E-commerce platform for eyewear products",
-  "main": "dist/server.js",
+  "main": "dist/app.js",
   "scripts": {
-    "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts",
+    "start": "node dist/app.js",
+    "dev": "nodemon src/app.ts",
     "build": "tsc",
     "test": "jest",
     "lint": "eslint . --ext .ts",

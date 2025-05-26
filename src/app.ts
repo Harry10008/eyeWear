@@ -7,10 +7,10 @@ import { rateLimit } from 'express-rate-limit';
 import { errorHandler } from './middleware/error.middleware';
 import { notFoundHandler } from './middleware/notFound.middleware';
 import swaggerUi from 'swagger-ui-express';
-// import swaggerFile from '../../swagger-output.json';
-import {swaggerSpec} from "../swagger";
-
+import { swaggerSpec } from "../swagger";
+import { connectDB } from './config/database';
 import { config } from './config/config';
+import { logger } from './utils/logger';
 
 // Import routes
 import authRoutes from './routes/auth.routes';
@@ -19,8 +19,12 @@ import productRoutes from './routes/product.routes';
 import categoryRoutes from './routes/category.routes';
 import orderRoutes from './routes/order.routes';
 import adminRoutes from './routes/admin.routes';
+import cartRoutes from './routes/cart.routes';
 
 const app: Application = express();
+
+// Connect to MongoDB
+connectDB();
 
 // Body parsing middleware
 app.use(express.json());
@@ -50,13 +54,12 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 
@@ -75,5 +78,26 @@ app.get('/health', (_req, res) => {
 // Error handling middleware
 app.use(notFoundHandler);
 app.use(errorHandler);
+
+// Start server
+const PORT = config.port;
+app.listen(PORT, () => {
+  logger.info(`Server is running on port ${PORT}`);
+  logger.info(`API Documentation available at http://localhost:${PORT}/api-docs`);
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (error: Error) => {
+  logger.error('Unhandled Promise Rejection:', error);
+  // Close server & exit process
+  process.exit(1);
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error: Error) => {
+  logger.error('Uncaught Exception:', error);
+  // Close server & exit process
+  process.exit(1);
+});
 
 export default app; 

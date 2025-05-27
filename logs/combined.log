@@ -881,3 +881,15 @@
 {"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-27 18:32:21"}
 {"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-27 18:32:21"}
 {"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-27 18:32:21"}
+{"level":"info","message":"Fetching products with filters","query":{"limit":"10","page":"1"},"service":"eyewear-api","timestamp":"2025-05-27 18:34:58"}
+{"level":"info","message":"Fetching products with filters","query":{"limit":"10","page":"1"},"service":"eyewear-api","timestamp":"2025-05-27 18:34:58"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-27 18:37:56"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-27 18:37:56"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-27 18:37:56"}
+{"level":"info","message":"Fetching products with filters","query":{"limit":"10","page":"1"},"service":"eyewear-api","timestamp":"2025-05-27 18:38:27"}
+{"level":"info","message":"Fetching products with filters","query":{"limit":"10","page":"1"},"service":"eyewear-api","timestamp":"2025-05-27 18:38:27"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-27 18:40:01"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-27 18:40:01"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-27 18:40:01"}
+{"level":"info","message":"Fetching products with filters","query":{"limit":"10","page":"1"},"service":"eyewear-api","timestamp":"2025-05-27 18:40:35"}
+{"level":"info","message":"Fetching products with filters","query":{"limit":"10","page":"1"},"service":"eyewear-api","timestamp":"2025-05-27 18:40:35"}

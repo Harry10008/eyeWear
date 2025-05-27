@@ -17,7 +17,7 @@ export class ProductService {
     return product;
   }
 
-  async getProducts(query: any = {}, options: any = {}) {
+  async getProducts(query: any = {}) {
     logger.info('Fetching products with filters', { query });
     
     // Handle search
@@ -32,15 +32,16 @@ export class ProductService {
     const parsedQuery = JSON.parse(queryStr);
 
     // Handle sorting
+    const options: any = {};
     if (query.sort) {
       options.sort = query.sort.split(',').join(' ');
-      delete query.sort;
+      delete parsedQuery.sort;
     }
 
     // Handle field limiting
     if (query.fields) {
       options.select = query.fields.split(',').join(' ');
-      delete query.fields;
+      delete parsedQuery.fields;
     }
 
     // Handle pagination
@@ -48,6 +49,10 @@ export class ProductService {
     const limit = parseInt(query.limit as string) || 10;
     options.skip = (page - 1) * limit;
     options.limit = limit;
+
+    // Remove pagination params from query
+    delete parsedQuery.page;
+    delete parsedQuery.limit;
 
     const [products, total] = await Promise.all([
       this.productRepository.find(parsedQuery, options),

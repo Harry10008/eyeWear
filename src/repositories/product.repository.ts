@@ -16,17 +16,21 @@ export class ProductRepository {
   async find(query: any = {}, options: any = {}) {
     const { sort = '-createdAt', limit = 10, skip = 0, select = '-__v' } = options;
     
-    return await Product.find(query)
+    // Build the query
+    const findQuery = { ...query, isActive: true };
+    
+    return await Product.find(findQuery)
       .sort(sort)
       .limit(limit)
       .skip(skip)
       .select(select)
       .populate('category', 'name slug')
-      .populate('subCategory', 'name slug');
+      .populate('subCategory', 'name slug')
+      .lean();
   }
 
   async count(query: any = {}) {
-    return await Product.countDocuments(query);
+    return await Product.countDocuments({ ...query, isActive: true });
   }
 
   async findByIdAndUpdate(id: string, data: Partial<IProduct>) {

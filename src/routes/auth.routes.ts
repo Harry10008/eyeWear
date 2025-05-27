@@ -315,7 +315,7 @@ router.post(
 
 /**
  * @swagger
- * /forgot-password:
+ * /api/auth/forgot-password:
  *   post:
  *     summary: Request password reset
  *     tags: [Auth]
@@ -345,7 +345,7 @@ router.post(
 
 /**
  * @swagger
- * /reset-password:
+ * /api/auth/reset-password:
  *   post:
  *     summary: Reset password
  *     tags: [Auth]

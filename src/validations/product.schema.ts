@@ -25,14 +25,15 @@ export const productSchema = Joi.object({
       'number.min': 'Offer price cannot be negative',
       'number.less': 'Offer price must be less than regular price'
     }),
-  category: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
+  category: Joi.string().required().valid('aviator', 'round', 'square', 'wayfarer')
     .messages({
       'string.empty': 'Category is required',
-      'string.pattern.base': 'Invalid category ID format'
+      'any.only': 'Category must be one of: aviator, round, square, wayfarer'
     }),
-  subCategory: Joi.string().regex(/^[0-9a-fA-F]{24}$/)
+  subCategory: Joi.string().required().valid('metal', 'plastic', 'acetate', 'titanium')
     .messages({
-      'string.pattern.base': 'Invalid subcategory ID format'
+      'string.empty': 'Subcategory is required',
+      'any.only': 'Subcategory must be one of: metal, plastic, acetate, titanium'
     }),
   brand: Joi.string().required().trim()
     .messages({

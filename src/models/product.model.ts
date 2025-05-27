@@ -8,8 +8,8 @@ export interface IProduct extends Document {
   description: string;
   price: number;
   offerPrice?: number;
-  category: mongoose.Types.ObjectId;
-  subCategory: mongoose.Types.ObjectId;
+  category: 'aviator' | 'round' | 'square' | 'wayfarer';
+  subCategory: 'metal' | 'plastic' | 'acetate' | 'titanium';
   brand: string;
   gender: 'men' | 'women' | 'unisex' | 'kids';
   type: 'sunglasses' | 'screenGlasses' | 'powerGlasses';
@@ -68,14 +68,14 @@ const productSchema = new Schema<IProduct>(
       },
     },
     category: {
-      type: Schema.Types.ObjectId,
-      ref: 'Category',
+      type: String,
       required: [true, 'Product category is required'],
+      enum: ['aviator', 'round', 'square', 'wayfarer'],
     },
     subCategory: {
-      type: Schema.Types.ObjectId,
-      ref: 'Category',
+      type: String,
       required: [true, 'Product subcategory is required'],
+      enum: ['metal', 'plastic', 'acetate', 'titanium'],
     },
     brand: {
       type: String,

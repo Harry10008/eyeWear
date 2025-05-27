@@ -5,8 +5,7 @@ export interface IAddress {
   city: string;
   state: string;
   country: string;
-  zipCode: string;
-  phone: string;
+  pincode: string;
 }
 
 export interface IPower {
@@ -19,11 +18,13 @@ export interface IOrderItem {
   product: Types.ObjectId;
   quantity: number;
   price: number;
-  lensType?: string;
-  lensColor?: string;
-  power?: {
-    leftEye?: IPower;
-    rightEye?: IPower;
+  lensDetails?: {
+    type: 'single-vision' | 'bifocal' | 'progressive';
+    power: string;
+  };
+  frameDetails?: {
+    size: 'small' | 'medium' | 'large';
+    color: string;
   };
 }
 
@@ -45,8 +46,11 @@ export interface CreateOrderDto {
 }
 
 export interface UpdateOrderStatusDto {
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  orderStatus?: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  paymentStatus?: 'pending' | 'paid' | 'failed' | 'refunded';
+  shippingStatus?: 'pending' | 'processing' | 'shipped' | 'delivered';
   trackingNumber?: string;
+  cancellationReason?: string;
 }
 
 export interface CancelOrderDto {

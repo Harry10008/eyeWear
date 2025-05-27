@@ -5,27 +5,20 @@ export interface ICartItem extends Document {
   product: mongoose.Types.ObjectId;
   quantity: number;
   price: number;
-  lensType?: string;
-  lensColor?: string;
-  power?: {
-    leftEye: {
-      sphere: number;
-      cylinder: number;
-      axis: number;
-    };
-    rightEye: {
-      sphere: number;
-      cylinder: number;
-      axis: number;
-    };
+  lensDetails?: {
+    type: 'single-vision' | 'bifocal' | 'progressive';
+    power: string;
+  };
+  frameDetails?: {
+    size: 'small' | 'medium' | 'large';
+    color: string;
   };
 }
 
 export interface ICart extends Document {
   user: mongoose.Types.ObjectId;
   items: ICartItem[];
-  totalItems: number;
-  totalAmount: number;
+  total: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -46,82 +39,45 @@ const cartItemSchema = new Schema<ICartItem>({
     required: true,
     min: [0, 'Price cannot be negative'],
   },
-  lensType: {
-    type: String,
-  },
-  lensColor: {
-    type: String,
-  },
-  power: {
-    leftEye: {
-      sphere: {
-        type: Number,
-        min: -20,
-        max: 20,
-      },
-      cylinder: {
-        type: Number,
-        min: -6,
-        max: 6,
-      },
-      axis: {
-        type: Number,
-        min: 0,
-        max: 180,
-      },
+  lensDetails: {
+    type: {
+      type: String,
+      enum: ['single-vision', 'bifocal', 'progressive'],
     },
-    rightEye: {
-      sphere: {
-        type: Number,
-        min: -20,
-        max: 20,
-      },
-      cylinder: {
-        type: Number,
-        min: -6,
-        max: 6,
-      },
-      axis: {
-        type: Number,
-        min: 0,
-        max: 180,
-      },
-    },
+    power: {
+      type: String,
+    }
   },
+  frameDetails: {
+    size: {
+      type: String,
+      enum: ['small', 'medium', 'large'],
+    },
+    color: {
+      type: String,
+    }
+  }
 });
 
-const cartSchema = new Schema<ICart>(
-  {
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-      unique: true,
-    },
-    items: [cartItemSchema],
-    totalItems: {
-      type: Number,
-      default: 0,
-      min: [0, 'Total items cannot be negative'],
-    },
-    totalAmount: {
-      type: Number,
-      default: 0,
-      min: [0, 'Total amount cannot be negative'],
-    },
+const cartSchema = new Schema<ICart>({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  items: [cartItemSchema],
+  total: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+}, {
+  timestamps: true,
+});
 
-// Calculate totals before saving
-cartSchema.pre('save', function (next) {
-  this.totalItems = this.items.reduce((sum, item) => sum + item.quantity, 0);
-  this.totalAmount = this.items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+// Calculate total before saving
+cartSchema.pre('save', function(next) {
+  this.total = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   next();
 });
 
@@ -130,7 +86,7 @@ cartSchema.index({ user: 1 });
 
 // Virtual for formatted total amount
 cartSchema.virtual('formattedTotalAmount').get(function () {
-  return this.totalAmount.toFixed(2);
+  return this.total.toFixed(2);
 });
 
 // Enable virtuals in JSON

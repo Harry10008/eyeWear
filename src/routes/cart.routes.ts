@@ -1,17 +1,9 @@
-import express from 'express';
-import {
-  getCart,
-  addToCart,
-  updateCartItem,
-  removeFromCart,
-  clearCart,
-  validateCart,
-} from '../controllers/cart.controller';
-import { validateRequest } from '../middleware/validateRequest';
-import { authenticate } from '../middleware/auth';
-import { cartItemSchema, updateCartItemSchema } from '../validations/cart.schema';
+import { Router } from 'express';
+import { CartController } from '../controllers/cart.controller';
+import { protect } from '../middleware/auth';
 
-const router = express.Router();
+const router = Router();
+const cartController = new CartController();
 
 /**
  * @swagger
@@ -85,8 +77,8 @@ const router = express.Router();
  *   description: Shopping cart management endpoints
  */
 
-// All cart routes require authentication
-router.use(authenticate);
+// Protect all cart routes
+router.use(protect);
 
 /**
  * @swagger
@@ -106,7 +98,7 @@ router.use(authenticate);
  *       401:
  *         description: Unauthorized - Authentication required
  */
-router.get('/', getCart);
+router.get('/', cartController.getCart);
 
 /**
  * @swagger
@@ -136,7 +128,7 @@ router.get('/', getCart);
  *       404:
  *         description: Product not found
  */
-router.post('/add', validateRequest(cartItemSchema), addToCart);
+router.post('/add', cartController.addToCart);
 
 /**
  * @swagger
@@ -180,7 +172,7 @@ router.post('/add', validateRequest(cartItemSchema), addToCart);
  *       404:
  *         description: Cart item not found
  */
-router.put('/:itemId', validateRequest(updateCartItemSchema), updateCartItem);
+router.patch('/items/:itemId', cartController.updateCartItem);
 
 /**
  * @swagger
@@ -209,7 +201,7 @@ router.put('/:itemId', validateRequest(updateCartItemSchema), updateCartItem);
  *       404:
  *         description: Cart item not found
  */
-router.delete('/:itemId', removeFromCart);
+router.delete('/items/:itemId', cartController.removeFromCart);
 
 /**
  * @swagger
@@ -233,7 +225,7 @@ router.delete('/:itemId', removeFromCart);
  *       401:
  *         description: Unauthorized - Authentication required
  */
-router.delete('/', clearCart);
+router.delete('/clear', cartController.clearCart);
 
 /**
  * @swagger
@@ -268,6 +260,6 @@ router.delete('/', clearCart);
  *       401:
  *         description: Unauthorized - Authentication required
  */
-router.post('/validate', validateCart);
+router.get('/validate', cartController.validateCart);
 
 export default router; 

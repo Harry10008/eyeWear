@@ -45,23 +45,7 @@ export const cartItemSchema = Joi.object({
       'number.integer': 'Quantity must be an integer',
       'number.min': 'Quantity must be at least 1',
       'any.required': 'Quantity is required'
-    }),
-  lensType: Joi.string()
-    .trim()
-    .messages({
-      'string.empty': 'Lens type cannot be empty'
-    }),
-  lensColor: Joi.string()
-    .trim()
-    .messages({
-      'string.empty': 'Lens color cannot be empty'
-    }),
-  power: Joi.object({
-    leftEye: powerSchema,
-    rightEye: powerSchema
-  }).messages({
-    'object.base': 'Power must be an object'
-  })
+    })
 });
 
 export const updateCartItemSchema = cartItemSchema.keys({

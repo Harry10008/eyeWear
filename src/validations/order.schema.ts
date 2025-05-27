@@ -13,20 +13,28 @@ const orderItemSchema = Joi.object({
   product: Joi.string().required().pattern(/^[0-9a-fA-F]{24}$/),
   quantity: Joi.number().required().min(1),
   price: Joi.number().required().min(0),
-  lensType: Joi.string().trim(),
-  lensColor: Joi.string().trim(),
-  power: Joi.object({
-    leftEye: Joi.object({
-      sphere: Joi.number().min(-20).max(20),
-      cylinder: Joi.number().min(-6).max(6),
-      axis: Joi.number().min(0).max(180)
-    }),
-    rightEye: Joi.object({
-      sphere: Joi.number().min(-20).max(20),
-      cylinder: Joi.number().min(-6).max(6),
-      axis: Joi.number().min(0).max(180)
-    })
-  })
+  lensDetails: Joi.object({
+    type: Joi.string().required().valid('single-vision', 'bifocal', 'progressive')
+      .messages({
+        'string.empty': 'Lens type is required',
+        'any.only': 'Lens type must be one of: single-vision, bifocal, progressive'
+      }),
+    power: Joi.string().required()
+      .messages({
+        'string.empty': 'Lens power is required'
+      })
+  }).required(),
+  frameDetails: Joi.object({
+    size: Joi.string().required().valid('small', 'medium', 'large')
+      .messages({
+        'string.empty': 'Frame size is required',
+        'any.only': 'Frame size must be one of: small, medium, large'
+      }),
+    color: Joi.string().required()
+      .messages({
+        'string.empty': 'Frame color is required'
+      })
+  }).required()
 });
 
 export const orderSchema = {

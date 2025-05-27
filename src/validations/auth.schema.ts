@@ -129,4 +129,109 @@ export const resetPasswordSchema = Joi.object({
       'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
       'any.required': 'Password is required'
     })
-}); 
+});
+
+export const addressSchema = Joi.object({
+  street: Joi.string().required().trim()
+    .messages({
+      'string.empty': 'Street address is required',
+      'any.required': 'Street address is required'
+    }),
+  city: Joi.string().required().trim()
+    .messages({
+      'string.empty': 'City is required',
+      'any.required': 'City is required'
+    }),
+  state: Joi.string().required().trim()
+    .messages({
+      'string.empty': 'State is required',
+      'any.required': 'State is required'
+    }),
+  country: Joi.string().required().trim()
+    .messages({
+      'string.empty': 'Country is required',
+      'any.required': 'Country is required'
+    }),
+  pincode: Joi.string()
+    .pattern(/^[0-9]{6}$/)
+    .required()
+    .messages({
+      'string.empty': 'Pincode is required',
+      'string.pattern.base': 'Please enter a valid 6-digit pincode',
+      'any.required': 'Pincode is required'
+    }),
+  isDefault: Joi.boolean().default(false)
+});
+
+export const updatePasswordSchema = Joi.object({
+  currentPassword: Joi.string()
+    .required()
+    .messages({
+      'string.empty': 'Current password is required',
+      'any.required': 'Current password is required'
+    }),
+  newPassword: Joi.string()
+    .min(8)
+    .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+    .required()
+    .messages({
+      'string.empty': 'New password is required',
+      'string.min': 'Password must be at least 8 characters long',
+      'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+      'any.required': 'New password is required'
+    }),
+  confirmPassword: Joi.string()
+    .valid(Joi.ref('newPassword'))
+    .required()
+    .messages({
+      'string.empty': 'Please confirm your password',
+      'any.only': 'Passwords do not match',
+      'any.required': 'Please confirm your password'
+    })
+});
+
+export const updateProfileSchema = Joi.object({
+  fullName: Joi.string()
+    .min(2)
+    .max(50)
+    .messages({
+      'string.min': 'Full name must be at least 2 characters long',
+      'string.max': 'Full name cannot exceed 50 characters'
+    }),
+  email: Joi.string()
+    .email()
+    .messages({
+      'string.email': 'Please enter a valid email'
+    }),
+  mobileNumber: Joi.string()
+    .pattern(/^[0-9]{10}$/)
+    .messages({
+      'string.pattern.base': 'Please enter a valid 10-digit mobile number'
+    }),
+  dateOfBirth: Joi.date()
+    .iso()
+    .messages({
+      'date.base': 'Please enter a valid date',
+      'date.format': 'Please enter a valid date in ISO format'
+    }),
+  gender: Joi.string()
+    .valid('male', 'female', 'other')
+    .messages({
+      'any.only': 'Gender must be male, female, or other'
+    }),
+  profilePicture: Joi.string()
+    .uri()
+    .messages({
+      'string.uri': 'Please enter a valid URL for profile picture'
+    })
+});
+
+export const authSchema = {
+  register: registerSchema,
+  login: loginSchema,
+  forgotPassword: forgotPasswordSchema,
+  resetPassword: resetPasswordSchema,
+  updatePassword: updatePasswordSchema,
+  updateProfile: updateProfileSchema,
+  addAddress: addressSchema
+}; 

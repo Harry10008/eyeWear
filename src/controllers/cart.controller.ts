@@ -1,149 +1,129 @@
-import { Request, Response } from 'express';
-import { Cart, ICartItem } from '../models/cart.model';
+import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../middleware/errorHandler';
-import { logger } from '../utils/logger';
 import { CartService } from '../services/cart.service';
-import { catchAsync } from '../utils/catchAsync';
+import { Types } from 'mongoose';
+import { ICartItem } from '../models/cart.model';
 
-const cartService = new CartService();
+export class CartController {
+  private cartService: CartService;
 
-// Get user's cart
-export const getCart = catchAsync(async (req: Request, res: Response) => {
-  const userId = (req as any).user?._id;
-  if (!userId) {
-    throw new AppError('User not authenticated', 401);
-  }
-  const cart = await cartService.getCart(userId);
-  res.status(200).json({
-    status: 'success',
-    data: { cart },
-  });
-});
-
-// Add item to cart
-export const addToCart = catchAsync(async (req: Request, res: Response) => {
-  const userId = (req as any).user?._id;
-  if (!userId) {
-    throw new AppError('User not authenticated', 401);
-  }
-  const { productId, quantity } = req.body;
-  const cart = await cartService.addToCart(userId, productId, quantity);
-  res.status(200).json({
-    status: 'success',
-    data: { cart },
-  });
-});
-
-// Update cart item
-export const updateCartItem = catchAsync(async (req: Request, res: Response) => {
-  const userId = (req as any).user?._id;
-  if (!userId) {
-    throw new AppError('User not authenticated', 401);
-  }
-  const { productId } = req.params;
-  const { quantity } = req.body;
-  const cart = await cartService.updateCartItem(userId, productId, quantity);
-  res.status(200).json({
-    status: 'success',
-    data: { cart },
-  });
-});
-
-// Remove item from cart
-export const removeFromCart = catchAsync(async (req: Request, res: Response) => {
-  const userId = (req as any).user?._id;
-  if (!userId) {
-    throw new AppError('User not authenticated', 401);
-  }
-  const { productId } = req.params;
-  const cart = await cartService.removeFromCart(userId, productId);
-  res.status(200).json({
-    status: 'success',
-    data: { cart },
-  });
-});
-
-// Clear cart
-export const clearCart = catchAsync(async (req: Request, res: Response) => {
-  const userId = (req as any).user?._id;
-  if (!userId) {
-    throw new AppError('User not authenticated', 401);
-  }
-  const cart = await cartService.clearCart(userId);
-  res.status(200).json({
-    status: 'success',
-    data: { cart },
-  });
-});
-
-// Validate cart items
-export const validateCart = catchAsync(async (req: Request, res: Response) => {
-  const userId = (req as any).user?._id;
-  if (!userId) {
-    throw new AppError('User not authenticated', 401);
-  }
-  
-  const cart = await Cart.findOne({ user: userId })
-    .populate('items.product', 'name price offerPrice stock isActive');
-
-  if (!cart || cart.items.length === 0) {
-    throw new AppError('Cart is empty', 400);
+  constructor() {
+    this.cartService = new CartService();
   }
 
-  const validationResults = {
-    isValid: true,
-    errors: [] as string[],
-    updatedItems: [] as ICartItem[],
+  getCart = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = new Types.ObjectId(req.user!.id);
+      const cart = await this.cartService.getCart(userId);
+      res.json(cart);
+    } catch (error) {
+      next(error);
+    }
   };
 
-  // Validate each item
-  for (const item of cart.items) {
-    const product = item.product as any;
+  addToCart = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = new Types.ObjectId(req.user!.id);
+      const { productId, quantity, lensDetails, frameDetails } = req.body;
 
-    // Check if product exists and is active
-    if (!product || !product.isActive) {
-      validationResults.isValid = false;
-      validationResults.errors.push(
-        `Product "${product?.name || 'Unknown'}" is no longer available`
+      if (!productId || !quantity) {
+        throw new AppError('Product ID and quantity are required', 400);
+      }
+
+      // Create a new cart item using the Cart model's items array
+      const cartItem = {
+        _id: new Types.ObjectId(),
+        product: new Types.ObjectId(productId),
+        quantity,
+        price: 0, // This will be updated when the product is populated
+        lensDetails,
+        frameDetails
+      } as ICartItem;
+
+      const cart = await this.cartService.addToCart(userId, cartItem);
+      res.json(cart);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updateCartItem = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = new Types.ObjectId(req.user!.id);
+      const { itemId } = req.params;
+      const { quantity } = req.body;
+
+      if (!quantity || quantity < 0) {
+        throw new AppError('Valid quantity is required', 400);
+      }
+
+      const cart = await this.cartService.updateCartItem(userId, itemId, quantity);
+      res.json(cart);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  removeFromCart = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = new Types.ObjectId(req.user!.id);
+      const { itemId } = req.params;
+
+      const cart = await this.cartService.removeFromCart(userId, itemId);
+      res.json(cart);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  clearCart = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = new Types.ObjectId(req.user!.id);
+      const cart = await this.cartService.clearCart(userId);
+      res.json(cart);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  validateCart = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = new Types.ObjectId(req.user!.id);
+      const cart = await this.cartService.getCart(userId);
+      
+      // Validate cart items
+      const validationResults = await Promise.all(
+        cart.items.map(async (item) => {
+          try {
+            // Check if product exists and is in stock
+            const product = await this.cartService.validateProduct(item.product);
+            
+            // Check if quantity is valid
+            const isQuantityValid = item.quantity > 0 && (product.stock ?? 0) >= item.quantity;
+            
+            return {
+              productId: item.product.toString(),
+              isValid: isQuantityValid,
+              message: isQuantityValid ? 'Valid' : 'Invalid quantity'
+            };
+          } catch (error) {
+            return {
+              productId: item.product.toString(),
+              isValid: false,
+              message: 'Product not found or out of stock'
+            };
+          }
+        })
       );
-      continue;
+
+      const isValid = validationResults.every(result => result.isValid);
+      
+      res.json({
+        isValid,
+        items: validationResults
+      });
+    } catch (error) {
+      next(error);
     }
-
-    // Check stock
-    if (product.stock < item.quantity) {
-      validationResults.isValid = false;
-      validationResults.errors.push(
-        `Insufficient stock for "${product.name}"`
-      );
-      continue;
-    }
-
-    // Check price changes
-    const currentPrice = product.offerPrice || product.price;
-    if (currentPrice !== item.price) {
-      item.price = currentPrice;
-      validationResults.updatedItems.push(item);
-    }
-  }
-
-  // Update cart if there are price changes
-  if (validationResults.updatedItems.length > 0) {
-    await cart.save();
-    logger.info('Cart prices updated', { 
-      userId,
-      updatedItems: validationResults.updatedItems.length
-    });
-  }
-
-  logger.info('Cart validation completed', { 
-    userId,
-    isValid: validationResults.isValid,
-    errorCount: validationResults.errors.length,
-    updatedItemsCount: validationResults.updatedItems.length
-  });
-
-  res.status(200).json({
-    status: 'success',
-    data: validationResults,
-  });
-}); 
+  };
+} 

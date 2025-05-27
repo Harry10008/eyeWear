@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { authenticate } from '../middleware/auth';
 import { AuthController } from '../controllers/auth.controller';
 import { validateRequest } from '../middleware/validateRequest';
-import { authSchema } from '../validations/auth.validation';
+import { authSchema } from '../validations/auth.schema';
 
 const router = Router();
 const authController = new AuthController();
@@ -501,5 +501,130 @@ router.patch(
  *         description: Unauthorized - Authentication required
  */
 router.get('/profile', authenticate, authController.getProfile);
+
+/**
+ * @swagger
+ * /api/auth/addresses:
+ *   post:
+ *     summary: Add a new address
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - street
+ *               - city
+ *               - state
+ *               - country
+ *               - pincode
+ *             properties:
+ *               street:
+ *                 type: string
+ *                 example: "123 Main St"
+ *               city:
+ *                 type: string
+ *                 example: "New York"
+ *               state:
+ *                 type: string
+ *                 example: "NY"
+ *               country:
+ *                 type: string
+ *                 example: "USA"
+ *               pincode:
+ *                 type: string
+ *                 pattern: ^[0-9]{6}$
+ *                 example: "123456"
+ *               isDefault:
+ *                 type: boolean
+ *                 example: true
+ *     responses:
+ *       201:
+ *         description: Address added successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ */
+router.post(
+  '/addresses',
+  authenticate,
+  validateRequest(authSchema.addAddress),
+  authController.addAddress
+);
+
+/**
+ * @swagger
+ * /api/auth/addresses:
+ *   get:
+ *     summary: Get all user addresses
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of user addresses
+ *       401:
+ *         description: Unauthorized - Authentication required
+ */
+router.get('/addresses', authenticate, authController.getAddresses);
+
+/**
+ * @swagger
+ * /api/auth/addresses/{addressId}/default:
+ *   patch:
+ *     summary: Set address as default
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: addressId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Address set as default successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       404:
+ *         description: Address not found
+ */
+router.patch(
+  '/addresses/:addressId/default',
+  authenticate,
+  authController.setDefaultAddress
+);
+
+/**
+ * @swagger
+ * /api/auth/addresses/{addressId}:
+ *   delete:
+ *     summary: Delete an address
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: addressId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Address deleted successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       404:
+ *         description: Address not found
+ */
+router.delete(
+  '/addresses/:addressId',
+  authenticate,
+  authController.deleteAddress
+);
 
 export default router; 

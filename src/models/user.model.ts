@@ -3,28 +3,29 @@ import bcrypt from 'bcryptjs';
 import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 import { config } from '../config';
 
+export interface IAddress {
+  _id: mongoose.Types.ObjectId;
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  pincode: string;
+  isDefault: boolean;
+}
+
 export interface IUser extends Document {
   fullName: string;
   email: string;
+  password: string;
   mobileNumber: string;
   dateOfBirth: Date;
   gender: 'male' | 'female' | 'other';
-  password: string;
-  addresses: Array<{
-    street: string;
-    city: string;
-    state: string;
-    country: string;
-    pincode: string;
-    isDefault: boolean;
-  }>;
-  profilePicture?: string;
+  role: 'user' | 'admin';
   isEmailVerified: boolean;
-  emailVerificationToken?: string;
-  emailVerificationExpires?: Date;
+  addresses: IAddress[];
+  profilePicture?: string;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
-  role: 'user' | 'admin';
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -33,91 +34,130 @@ export interface IUser extends Document {
   generatePasswordResetToken(): string;
 }
 
-const userSchema = new Schema<IUser>(
-  {
-    fullName: {
-      type: String,
-      required: [true, 'Full name is required'],
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-      lowercase: true,
-      trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
-    },
-    mobileNumber: {
-      type: String,
-      required: [true, 'Mobile number is required'],
-      unique: true,
-      trim: true,
-      match: [/^[0-9]{10}$/, 'Please enter a valid 10-digit mobile number'],
-    },
-    dateOfBirth: {
-      type: Date,
-      required: [true, 'Date of birth is required'],
-    },
-    gender: {
-      type: String,
-      required: [true, 'Gender is required'],
-      enum: ['male', 'female', 'other'],
-    },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: [8, 'Password must be at least 8 characters long'],
-      select: false,
-    },
-    addresses: [{
-      street: {
-        type: String,
-        required: [true, 'Street address is required'],
-      },
-      city: {
-        type: String,
-        required: [true, 'City is required'],
-      },
-      state: {
-        type: String,
-        required: [true, 'State is required'],
-      },
-      country: {
-        type: String,
-        required: [true, 'Country is required'],
-      },
-      pincode: {
-        type: String,
-        required: [true, 'Pincode is required'],
-        match: [/^[0-9]{6}$/, 'Please enter a valid 6-digit pincode'],
-      },
-      isDefault: {
-        type: Boolean,
-        default: false,
-      },
-    }],
-    profilePicture: {
-      type: String,
-    },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
-    emailVerificationToken: String,
-    emailVerificationExpires: Date,
-    resetPasswordToken: String,
-    resetPasswordExpires: Date,
-    role: {
-      type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
-    },
+const addressSchema = new Schema<IAddress>({
+  street: {
+    type: String,
+    required: [true, 'Street address is required'],
+    trim: true
   },
-  {
-    timestamps: true,
+  city: {
+    type: String,
+    required: [true, 'City is required'],
+    trim: true
+  },
+  state: {
+    type: String,
+    required: [true, 'State is required'],
+    trim: true
+  },
+  country: {
+    type: String,
+    required: [true, 'Country is required'],
+    trim: true
+  },
+  pincode: {
+    type: String,
+    required: [true, 'Pincode is required'],
+    trim: true,
+    validate: {
+      validator: function(v: string) {
+        return /^[0-9]{6}$/.test(v);
+      },
+      message: 'Please enter a valid 6-digit pincode'
+    }
+  },
+  isDefault: {
+    type: Boolean,
+    default: false
   }
-);
+}, { _id: true });
+
+const userSchema = new Schema<IUser>({
+  fullName: {
+    type: String,
+    required: [true, 'Full name is required'],
+    trim: true,
+    minlength: [2, 'Full name must be at least 2 characters long'],
+    maxlength: [50, 'Full name cannot exceed 50 characters']
+  },
+  email: {
+    type: String,
+    required: [true, 'Email is required'],
+    unique: true,
+    trim: true,
+    lowercase: true,
+    validate: {
+      validator: function(v: string) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      },
+      message: 'Please enter a valid email address'
+    }
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: [8, 'Password must be at least 8 characters long'],
+    validate: {
+      validator: function(v: string) {
+        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(v);
+      },
+      message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    }
+  },
+  mobileNumber: {
+    type: String,
+    required: [true, 'Mobile number is required'],
+    trim: true,
+    validate: {
+      validator: function(v: string) {
+        return /^[0-9]{10}$/.test(v);
+      },
+      message: 'Please enter a valid 10-digit mobile number'
+    }
+  },
+  dateOfBirth: {
+    type: Date,
+    required: [true, 'Date of birth is required']
+  },
+  gender: {
+    type: String,
+    required: [true, 'Gender is required'],
+    enum: {
+      values: ['male', 'female', 'other'],
+      message: 'Gender must be male, female, or other'
+    }
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
+  isEmailVerified: {
+    type: Boolean,
+    default: false
+  },
+  addresses: {
+    type: [addressSchema],
+    validate: {
+      validator: function(addresses: IAddress[]) {
+        return addresses.length <= 5;
+      },
+      message: 'Maximum limit of 5 addresses reached'
+    }
+  },
+  profilePicture: {
+    type: String,
+    trim: true
+  },
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpires: {
+    type: Date
+  }
+}, {
+  timestamps: true
+});
 
 // Hash password before saving
 userSchema.pre('save', async function (next) {

@@ -4,6 +4,7 @@ import { Cart } from '../models/cart.model';
 import { AppError } from '../middleware/errorHandler';
 import { CreateOrderDto, UpdateOrderStatusDto } from '../dtos/order.dto';
 import { logger } from '../utils/logger';
+import { ICart, ICartItem, IOrderItem } from '../interfaces/cart.interface';
 
 export class OrderService {
   private orderRepository: OrderRepository;
@@ -47,6 +48,22 @@ export class OrderService {
     return date;
   }
 
+  private async createOrderItems(cart: ICart): Promise<IOrderItem[]> {
+    return cart.items.map((item: ICartItem) => ({
+      product: item.product,
+      quantity: item.quantity,
+      price: item.price,
+      lensDetails: item.lensDetails ? {
+        type: item.lensDetails.type,
+        power: item.lensDetails.power
+      } : undefined,
+      frameDetails: item.frameDetails ? {
+        size: item.frameDetails.size,
+        color: item.frameDetails.color
+      } : undefined
+    }));
+  }
+
   async createOrder(userId: Types.ObjectId, orderData: CreateOrderDto) {
     // Get user's cart
     const cart = await Cart.findOne({ user: userId }).populate('items.product');
@@ -55,7 +72,7 @@ export class OrderService {
     }
 
     // Calculate order totals
-    const subtotal = cart.totalAmount;
+    const subtotal = cart.total;
     const shippingCost = this.calculateShippingCost(orderData.shippingMethod, subtotal);
     const tax = this.calculateTax(subtotal);
     const total = subtotal + shippingCost + tax;
@@ -63,14 +80,7 @@ export class OrderService {
     // Create order with calculated values
     const order = await this.orderRepository.create({
       user: userId,
-      items: cart.items.map(item => ({
-        product: item.product._id,
-        quantity: item.quantity,
-        price: item.price,
-        lensType: item.lensType,
-        lensColor: item.lensColor,
-        power: item.power,
-      })),
+      items: await this.createOrderItems(cart),
       shippingAddress: orderData.shippingAddress,
       billingAddress: orderData.billingAddress,
       paymentMethod: orderData.paymentMethod,
@@ -88,8 +98,7 @@ export class OrderService {
 
     // Clear cart after successful order creation
     cart.items = [];
-    cart.totalItems = 0;
-    cart.totalAmount = 0;
+    cart.total = 0;
     await cart.save();
 
     logger.info('New order created', { 

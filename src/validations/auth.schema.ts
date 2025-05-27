@@ -53,6 +53,14 @@ export const registerSchema = Joi.object({
       'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
       'any.required': 'Password is required'
     }),
+  confirmPassword: Joi.string()
+    .valid(Joi.ref('password'))
+    .required()
+    .messages({
+      'string.empty': 'Please confirm your password',
+      'any.only': 'Passwords do not match',
+      'any.required': 'Please confirm your password'
+    }),
   addresses: Joi.array()
     .items(
       Joi.object({
@@ -79,7 +87,9 @@ export const registerSchema = Joi.object({
             'string.empty': 'Pincode is required',
             'string.pattern.base': 'Please enter a valid 6-digit pincode',
             'any.required': 'Pincode is required'
-          })
+          }),
+        isDefault: Joi.boolean()
+          .default(false)
       })
     )
     .min(1)
@@ -129,38 +139,6 @@ export const resetPasswordSchema = Joi.object({
       'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
       'any.required': 'Password is required'
     })
-});
-
-export const addressSchema = Joi.object({
-  street: Joi.string().required().trim()
-    .messages({
-      'string.empty': 'Street address is required',
-      'any.required': 'Street address is required'
-    }),
-  city: Joi.string().required().trim()
-    .messages({
-      'string.empty': 'City is required',
-      'any.required': 'City is required'
-    }),
-  state: Joi.string().required().trim()
-    .messages({
-      'string.empty': 'State is required',
-      'any.required': 'State is required'
-    }),
-  country: Joi.string().required().trim()
-    .messages({
-      'string.empty': 'Country is required',
-      'any.required': 'Country is required'
-    }),
-  pincode: Joi.string()
-    .pattern(/^[0-9]{6}$/)
-    .required()
-    .messages({
-      'string.empty': 'Pincode is required',
-      'string.pattern.base': 'Please enter a valid 6-digit pincode',
-      'any.required': 'Pincode is required'
-    }),
-  isDefault: Joi.boolean().default(false)
 });
 
 export const updatePasswordSchema = Joi.object({
@@ -224,6 +202,38 @@ export const updateProfileSchema = Joi.object({
     .messages({
       'string.uri': 'Please enter a valid URL for profile picture'
     })
+});
+
+export const addressSchema = Joi.object({
+  street: Joi.string().required().trim()
+    .messages({
+      'string.empty': 'Street address is required',
+      'any.required': 'Street address is required'
+    }),
+  city: Joi.string().required().trim()
+    .messages({
+      'string.empty': 'City is required',
+      'any.required': 'City is required'
+    }),
+  state: Joi.string().required().trim()
+    .messages({
+      'string.empty': 'State is required',
+      'any.required': 'State is required'
+    }),
+  country: Joi.string().required().trim()
+    .messages({
+      'string.empty': 'Country is required',
+      'any.required': 'Country is required'
+    }),
+  pincode: Joi.string()
+    .pattern(/^[0-9]{6}$/)
+    .required()
+    .messages({
+      'string.empty': 'Pincode is required',
+      'string.pattern.base': 'Please enter a valid 6-digit pincode',
+      'any.required': 'Pincode is required'
+    }),
+  isDefault: Joi.boolean().default(false)
 });
 
 export const authSchema = {

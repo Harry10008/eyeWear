@@ -60,7 +60,7 @@ export class AuthController {
 
   updatePassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.user?.id;
+      const userId = req.user?._id;
       if (!userId) {
         throw new AppError('User not authenticated', 401);
       }

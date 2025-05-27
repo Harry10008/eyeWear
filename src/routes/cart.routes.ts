@@ -205,7 +205,7 @@ router.delete('/items/:itemId', cartController.removeFromCart);
 
 /**
  * @swagger
- * /api/cart:
+ * /api/cart/clear:
  *   delete:
  *     summary: Clear cart
  *     tags: [Cart]

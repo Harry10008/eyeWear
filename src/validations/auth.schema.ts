@@ -129,6 +129,12 @@ export const forgotPasswordSchema = Joi.object({
 });
 
 export const resetPasswordSchema = Joi.object({
+  token: Joi.string()
+    .required()
+    .messages({
+      'string.empty': 'Reset token is required',
+      'any.required': 'Reset token is required'
+    }),
   password: Joi.string()
     .min(8)
     .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
@@ -138,6 +144,14 @@ export const resetPasswordSchema = Joi.object({
       'string.min': 'Password must be at least 8 characters long',
       'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
       'any.required': 'Password is required'
+    }),
+  confirmPassword: Joi.string()
+    .valid(Joi.ref('password'))
+    .required()
+    .messages({
+      'string.empty': 'Please confirm your password',
+      'any.only': 'Passwords do not match',
+      'any.required': 'Please confirm your password'
     })
 });
 

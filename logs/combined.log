@@ -818,3 +818,13 @@
 {"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-27 13:14:46"}
 {"level":"info","message":"Email sent to john@example.com","service":"eyewear-api","timestamp":"2025-05-27 13:17:24"}
 {"level":"info","message":"Email sent to hariommourya1008@gmail.com","service":"eyewear-api","timestamp":"2025-05-27 13:19:53"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-27 13:49:36","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-27 13:52:23","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-27 13:54:24"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-27 13:54:24"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-27 13:54:24"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-27 13:54:50"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-27 13:54:50"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-27 13:54:50"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-27 13:56:02","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-27 13:56:17","userId":"6834053f591711babbefcbe8"}

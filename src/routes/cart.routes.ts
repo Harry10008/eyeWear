@@ -132,7 +132,7 @@ router.post('/add', cartController.addToCart);
 
 /**
  * @swagger
- * /api/cart/{itemId}:
+ * /api/cart/items/{itemId}:
  *   put:
  *     summary: Update cart item quantity
  *     tags: [Cart]
@@ -176,7 +176,7 @@ router.patch('/items/:itemId', cartController.updateCartItem);
 
 /**
  * @swagger
- * /api/cart/{itemId}:
+ * /api/cart/items/{itemId}:
  *   delete:
  *     summary: Remove item from cart
  *     tags: [Cart]

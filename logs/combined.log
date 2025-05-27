@@ -720,3 +720,93 @@
 {"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 15:33:10"}
 {"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 15:33:10"}
 {"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 15:33:10"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 15:38:11"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 15:38:11"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 15:38:11"}
+{"level":"info","message":"Email sent to hariommourya1008@gmail.com","service":"eyewear-api","timestamp":"2025-05-26 16:17:44"}
+{"level":"info","message":"Fetching products with filters","query":{"limit":"10","page":"1"},"service":"eyewear-api","timestamp":"2025-05-26 16:24:38"}
+{"level":"info","message":"Fetching products with filters","query":{"limit":"10","page":"1"},"service":"eyewear-api","timestamp":"2025-05-26 16:24:38"}
+{"level":"info","message":"Fetching products with filters","query":{},"service":"eyewear-api","timestamp":"2025-05-26 16:27:15"}
+{"level":"info","message":"Fetching products with filters","query":{},"service":"eyewear-api","timestamp":"2025-05-26 16:27:15"}
+{"level":"info","message":"User authenticated","role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:35:44","userId":"682c561cdc9157d5b2af9d2c"}
+{"level":"info","message":"User authorized","requiredRoles":["admin"],"role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:35:44","userId":"682c561cdc9157d5b2af9d2c"}
+{"level":"info","message":"User authenticated","role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:38:08","userId":"682c561cdc9157d5b2af9d2c"}
+{"level":"info","message":"User authorized","requiredRoles":["admin"],"role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:38:08","userId":"682c561cdc9157d5b2af9d2c"}
+{"level":"info","message":"User authenticated","role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:40:07","userId":"682c561cdc9157d5b2af9d2c"}
+{"level":"info","message":"User authorized","requiredRoles":["admin"],"role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:40:07","userId":"682c561cdc9157d5b2af9d2c"}
+{"body":{"brand":"Ray-Ban","bridgeWidth":14,"category":"6650023c9b3f8f0c4c123abc","description":"Classic aviator sunglasses with gold frame","features":["UV Protection","Polarized"],"frameColor":"gold","frameMaterial":"metal","gender":"unisex","images":["https://example.com/image1.jpg"],"lensType":"polarized","lensWidth":58,"name":"Ray-Ban Aviator","price":1099.99,"stock":50,"templeLength":135,"type":"sunglasses"},"level":"info","message":"Creating new product","service":"eyewear-api","timestamp":"2025-05-26 16:40:07"}
+{"body":{"brand":"Ray-Ban","bridgeWidth":14,"category":"6650023c9b3f8f0c4c123abc","description":"Classic aviator sunglasses with gold frame","features":["UV Protection","Polarized"],"frameColor":"gold","frameMaterial":"metal","gender":"unisex","images":["https://example.com/image1.jpg"],"lensType":"polarized","lensWidth":58,"name":"Ray-Ban Aviator","price":1099.99,"stock":50,"templeLength":135,"type":"sunglasses"},"level":"info","message":"Creating new product","service":"eyewear-api","timestamp":"2025-05-26 16:40:07"}
+{"level":"info","message":"User authenticated","role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:42:33","userId":"682c561cdc9157d5b2af9d2c"}
+{"level":"info","message":"User authorized","requiredRoles":["admin"],"role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:42:33","userId":"682c561cdc9157d5b2af9d2c"}
+{"body":{"brand":"Ray-Ban","bridgeWidth":18,"category":"60c72b2f9b1e8b002a5e56b1","description":"Stylish and durable sunglasses with UV protection, perfect for sunny days.","features":["UV Protection","Scratch Resistant","Lightweight Frame"],"frameColor":"Black","frameMaterial":"Metal","gender":"men","images":["https://example.com/images/product1.jpg","https://example.com/images/product2.jpg"],"isActive":true,"lensColor":"Green","lensType":"Polarized","lensWidth":55,"name":"Aviator nice Sunglasses","offerPrice":99,"price":120,"stock":50,"subCategory":"60c72b3c9b1e8b002a5e56b2","templeLength":140,"type":"sunglasses"},"level":"info","message":"Creating new product","service":"eyewear-api","timestamp":"2025-05-26 16:42:33"}
+{"body":{"brand":"Ray-Ban","bridgeWidth":18,"category":"60c72b2f9b1e8b002a5e56b1","description":"Stylish and durable sunglasses with UV protection, perfect for sunny days.","features":["UV Protection","Scratch Resistant","Lightweight Frame"],"frameColor":"Black","frameMaterial":"Metal","gender":"men","images":["https://example.com/images/product1.jpg","https://example.com/images/product2.jpg"],"isActive":true,"lensColor":"Green","lensType":"Polarized","lensWidth":55,"name":"Aviator nice Sunglasses","offerPrice":99,"price":120,"stock":50,"subCategory":"60c72b3c9b1e8b002a5e56b2","templeLength":140,"type":"sunglasses"},"level":"info","message":"Creating new product","service":"eyewear-api","timestamp":"2025-05-26 16:42:33"}
+{"level":"info","message":"Product created successfully","productId":"68344ca12499c1a4c7845bd0","service":"eyewear-api","timestamp":"2025-05-26 16:42:33"}
+{"level":"info","message":"Product created successfully","productId":"68344ca12499c1a4c7845bd0","service":"eyewear-api","timestamp":"2025-05-26 16:42:33"}
+{"level":"info","message":"User authenticated","role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:54:01","userId":"682c561cdc9157d5b2af9d2c"}
+{"level":"info","message":"User authorized","requiredRoles":["admin"],"role":"admin","service":"eyewear-api","timestamp":"2025-05-26 16:54:01","userId":"682c561cdc9157d5b2af9d2c"}
+{"body":{"brand":"Ray-Ban","bridgeWidth":18,"category":"60c72b2f9b1e8b002a5e56b1","description":"this is for testing pourposes.","features":["UV Protection","Scratch Resistant","Lightweight Frame"],"frameColor":"Black","frameMaterial":"Metal","gender":"men","images":["https://example.com/images/product1.jpg","https://example.com/images/product2.jpg"],"isActive":true,"lensColor":"Green","lensType":"Polarized","lensWidth":55,"name":"uv protected Sunglasses","offerPrice":999,"price":1200,"stock":50,"subCategory":"60c72b3c9b1e8b002a5e56b2","templeLength":140,"type":"sunglasses"},"level":"info","message":"Creating new product","service":"eyewear-api","timestamp":"2025-05-26 16:54:01"}
+{"body":{"brand":"Ray-Ban","bridgeWidth":18,"category":"60c72b2f9b1e8b002a5e56b1","description":"this is for testing pourposes.","features":["UV Protection","Scratch Resistant","Lightweight Frame"],"frameColor":"Black","frameMaterial":"Metal","gender":"men","images":["https://example.com/images/product1.jpg","https://example.com/images/product2.jpg"],"isActive":true,"lensColor":"Green","lensType":"Polarized","lensWidth":55,"name":"uv protected Sunglasses","offerPrice":999,"price":1200,"stock":50,"subCategory":"60c72b3c9b1e8b002a5e56b2","templeLength":140,"type":"sunglasses"},"level":"info","message":"Creating new product","service":"eyewear-api","timestamp":"2025-05-26 16:54:01"}
+{"level":"info","message":"Product created successfully","productId":"68344f512499c1a4c7845bd3","service":"eyewear-api","timestamp":"2025-05-26 16:54:01"}
+{"level":"info","message":"Product created successfully","productId":"68344f512499c1a4c7845bd3","service":"eyewear-api","timestamp":"2025-05-26 16:54:01"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 16:56:13"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 16:56:13"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 16:56:13"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 16:56:24"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 16:56:24"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 16:56:24"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 16:56:36"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 16:56:36"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 16:56:36"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 16:58:23"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 16:58:23"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 16:58:23"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 17:05:44"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 17:05:44"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 17:05:44"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 17:06:48"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 17:06:48"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 17:06:48"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 17:12:28"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 17:12:28"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 17:12:28"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 17:13:26"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 17:13:26"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 17:13:26"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:26:11","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"Creating new cart","service":"eyewear-api","timestamp":"2025-05-26 18:26:11","userId":"6834053f591711babbefcbe8"}
+{"cartId":"683464eb8fd0c1d25b534812","level":"info","message":"Cart created successfully","service":"eyewear-api","timestamp":"2025-05-26 18:26:11"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:27:27","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:29:26","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:29:52","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 18:30:21"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 18:30:21"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 18:30:21"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:30:24","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:31:20","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 18:33:39"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 18:33:39"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 18:33:39"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:33:52","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:34:07","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:35:41","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 18:38:13"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 18:38:13"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 18:38:13"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:38:56","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 18:41:39"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 18:41:39"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 18:41:39"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 18:42:53"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 18:42:53"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 18:42:53"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:42:56","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-26 18:43:37"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-26 18:43:37"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-26 18:43:37"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:44:36","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:44:47","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:45:33","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"User authenticated","role":"user","service":"eyewear-api","timestamp":"2025-05-26 18:45:58","userId":"6834053f591711babbefcbe8"}
+{"level":"info","message":"Server is running on port 5000","service":"eyewear-api","timestamp":"2025-05-27 12:59:39"}
+{"level":"info","message":"API Documentation available at http://localhost:5000/api-docs","service":"eyewear-api","timestamp":"2025-05-27 12:59:39"}
+{"level":"info","message":"Connected to MongoDB","service":"eyewear-api","timestamp":"2025-05-27 12:59:39"}

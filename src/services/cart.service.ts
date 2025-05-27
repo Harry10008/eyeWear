@@ -47,7 +47,7 @@ export class CartService {
       existingItem.quantity += quantity;
     } else {
       cart.items.push({
-        product: new mongoose.Types.ObjectId(productId),
+        product: productId,
         quantity,
         price: 0 // Will be updated when saving
       } as any);
@@ -112,7 +112,7 @@ export class CartService {
     let totalAmount = 0;
     
     for (const item of cart.items) {
-      const product = await this.productRepository.findById(item.product.toString());
+      const product = await this.productRepository.findById(item.product);
       if (product) {
         const price = product.offerPrice || product.price;
         item.price = price;
